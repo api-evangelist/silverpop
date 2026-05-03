@@ -1,0 +1,28 @@
+{
+  "title": "Add Contact Example",
+  "description": "Example request and response for adding a contact to a Silverpop database.",
+  "request": {
+    "method": "POST",
+    "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/12345/contacts",
+    "headers": {
+      "Authorization": "Bearer {access_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "jane.doe@example.com",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "custom_fields": {
+        "Company": "Acme Corp",
+        "Title": "Marketing Director",
+        "Lead_Source": "Webinar"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "contact_id": "987654321"
+    }
+  }
+}

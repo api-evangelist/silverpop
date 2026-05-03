@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silverpop/main/json-schema/silverpop-contact-schema.json",
+  "title": "Silverpop Contact",
+  "description": "Schema for a Silverpop (Acoustic Campaign) contact resource.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique contact identifier."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Contact's email address (primary key)."
+    },
+    "first_name": {
+      "type": "string",
+      "description": "Contact's first name."
+    },
+    "last_name": {
+      "type": "string",
+      "description": "Contact's last name."
+    },
+    "opt_in_status": {
+      "type": "string",
+      "enum": ["opted_in", "opted_out", "pending"],
+      "description": "Email opt-in status."
+    },
+    "custom_fields": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Custom field key-value pairs specific to the database schema."
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Contact creation timestamp."
+    },
+    "modified": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last modification timestamp."
+    }
+  },
+  "required": ["email"]
+}

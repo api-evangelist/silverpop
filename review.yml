@@ -1,0 +1,9 @@
+name: Silverpop
+description: Silverpop (Acoustic Campaign) email marketing platform API review.
+url: https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/review.yml
+created: '2026-05-02'
+modified: '2026-05-02'
+reviews:
+- date: '2026-05-02'
+  rating: 3
+  summary: Silverpop (now Acoustic Campaign, formerly IBM Watson Campaign Automation) provides REST and XML APIs for email marketing automation. The platform has undergone multiple ownership changes (Silverpop → IBM → Acoustic) creating documentation fragmentation. OAuth 2.0 authentication requires a refresh token workflow. Node.js SDK available on GitHub.

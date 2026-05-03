@@ -1,0 +1,46 @@
+{
+  "title": "Silverpop Contact Structure",
+  "description": "Structural documentation for the Silverpop Contact resource.",
+  "version": "1.0",
+  "structure": {
+    "Contact": {
+      "description": "A marketing contact in a Silverpop database.",
+      "fields": {
+        "id": {"type": "string", "description": "Unique contact ID."},
+        "email": {"type": "string", "format": "email", "description": "Primary email address."},
+        "first_name": {"type": "string"},
+        "last_name": {"type": "string"},
+        "opt_in_status": {"type": "enum", "values": ["opted_in", "opted_out", "pending"]},
+        "custom_fields": {"type": "object", "description": "Database-specific custom fields."},
+        "created": {"type": "datetime"},
+        "modified": {"type": "datetime"}
+      }
+    },
+    "Database": {
+      "description": "A contact list or database in Silverpop.",
+      "fields": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "type": {"type": "enum", "values": ["database", "query", "relational_table"]},
+        "contact_count": {"type": "integer"},
+        "created": {"type": "datetime"},
+        "modified": {"type": "datetime"}
+      }
+    },
+    "Campaign": {
+      "description": "An email campaign mailing.",
+      "fields": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "subject": {"type": "string"},
+        "status": {"type": "enum", "values": ["draft", "scheduled", "sent", "canceled"]},
+        "database_id": {"type": "string"},
+        "from_name": {"type": "string"},
+        "from_email": {"type": "string", "format": "email"},
+        "scheduled_date": {"type": "datetime"},
+        "sent_date": {"type": "datetime"},
+        "created": {"type": "datetime"}
+      }
+    }
+  }
+}

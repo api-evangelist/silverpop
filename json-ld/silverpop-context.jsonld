@@ -1,0 +1,41 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "silverpop": "https://developer.goacoustic.com/vocab#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Contact": "schema:Person",
+    "Database": "schema:ItemList",
+    "Campaign": "schema:EmailMessage",
+    "Program": "silverpop:AutomationProgram",
+    "EngagementEvent": "schema:InteractionCounter",
+
+    "id": "@id",
+    "email": "schema:email",
+    "first_name": "schema:givenName",
+    "last_name": "schema:familyName",
+    "opt_in_status": "silverpop:optInStatus",
+    "custom_fields": "silverpop:customFields",
+    "created": {"@id": "schema:dateCreated", "@type": "xsd:dateTime"},
+    "modified": {"@id": "schema:dateModified", "@type": "xsd:dateTime"},
+
+    "name": "schema:name",
+    "subject": "schema:about",
+    "status": "schema:status",
+    "database_id": "silverpop:databaseReference",
+    "from_name": "schema:senderName",
+    "from_email": "schema:senderEmail",
+    "scheduled_date": {"@id": "silverpop:scheduledDate", "@type": "xsd:dateTime"},
+    "sent_date": {"@id": "silverpop:sentDate", "@type": "xsd:dateTime"},
+
+    "sent_count": "silverpop:sentCount",
+    "delivered_count": "silverpop:deliveredCount",
+    "open_count": "silverpop:openCount",
+    "click_count": "silverpop:clickCount",
+    "unsubscribe_count": "silverpop:unsubscribeCount",
+    "bounce_count": "silverpop:bounceCount",
+    "open_rate": "silverpop:openRate",
+    "click_rate": "silverpop:clickRate"
+  }
+}

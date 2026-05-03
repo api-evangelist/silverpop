@@ -1,0 +1,86 @@
+name: Silverpop Vocabulary
+description: Domain vocabulary for the Silverpop (Acoustic Campaign) email marketing and marketing automation platform.
+url: https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/vocabulary/silverpop-vocabulary.yml
+created: '2026-05-02'
+modified: '2026-05-02'
+tags:
+- Email Marketing
+- Marketing Automation
+- Campaign Management
+terms:
+- term: Database
+  definition: A contact list in Silverpop containing subscriber records. Databases have defined field schemas and store all contact attributes. Equivalent to a mailing list or audience segment.
+  type: resource
+  relatedTerms:
+  - Contact
+  - Query
+
+- term: Contact
+  definition: A subscriber record in a Silverpop database identified by email address. Contacts have standard fields (first name, last name) plus custom fields defined by the database schema.
+  type: resource
+  relatedTerms:
+  - Database
+  - OptInStatus
+
+- term: OptInStatus
+  definition: The subscription consent status of a contact. Values are opted_in (active subscriber), opted_out (unsubscribed), or pending (awaiting confirmation).
+  type: enum
+  values:
+  - opted_in
+  - opted_out
+  - pending
+
+- term: Campaign
+  definition: An email mailing sent to a database or query. Campaigns have a lifecycle of draft (being composed), scheduled (delivery planned), sent (delivered), or canceled.
+  type: resource
+  relatedTerms:
+  - Database
+  - MailingReport
+
+- term: Transactional
+  definition: A one-to-one triggered email or SMS message sent to a single recipient in response to an event (e.g., purchase confirmation, password reset). Distinct from bulk campaigns.
+  type: concept
+  relatedTerms:
+  - Campaign
+
+- term: Program
+  definition: A marketing automation workflow that sends messages to contacts based on triggers, schedules, or behavioral criteria. Programs can be drip sequences, behavior-triggered flows, or batch automations.
+  type: resource
+  relatedTerms:
+  - Campaign
+  - Contact
+
+- term: Query
+  definition: A dynamic contact segment derived by filtering a database against criteria. Queries are recomputed at send time and can be used as campaign targets.
+  type: resource
+  relatedTerms:
+  - Database
+
+- term: OpenRate
+  definition: The percentage of delivered emails that were opened by recipients. Calculated as unique opens divided by delivered count.
+  type: metric
+  relatedTerms:
+  - ClickRate
+  - MailingReport
+
+- term: ClickRate
+  definition: The percentage of delivered emails where a recipient clicked a tracked link. Calculated as unique clicks divided by delivered count.
+  type: metric
+  relatedTerms:
+  - OpenRate
+
+- term: Bounce
+  definition: An email that could not be delivered. Hard bounces (permanent address failures) result in contact suppression; soft bounces (temporary failures) may be retried.
+  type: concept
+  relatedTerms:
+  - Campaign
+
+- term: RelationalTable
+  definition: A supplemental data store linked to a database that allows one-to-many relationships (e.g., purchase history, product preferences) for personalization.
+  type: resource
+  relatedTerms:
+  - Database
+
+- term: RefreshToken
+  definition: A long-lived credential used to obtain new OAuth access tokens without re-authenticating. Required along with Client ID and Client Secret to generate access tokens.
+  type: security

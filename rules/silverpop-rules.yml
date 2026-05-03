@@ -1,0 +1,66 @@
+extends: spectral:oas
+rules:
+  silverpop-operation-summary-title-case:
+    description: All operation summaries must use Title Case.
+    message: 'Summary "{{value}}" must use Title Case.'
+    severity: warn
+    given: '$.paths[*][*].summary'
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[A-Z][a-z]+(\s[A-Z][a-z]+)*$'
+
+  silverpop-operation-ids-camel-case:
+    description: Operation IDs should use camelCase.
+    message: 'OperationId "{{value}}" should be camelCase.'
+    severity: warn
+    given: '$.paths[*][*].operationId'
+    then:
+      function: pattern
+      functionOptions:
+        match: '^[a-z][a-zA-Z0-9]+$'
+
+  silverpop-tags-defined:
+    description: All operations must include at least one tag.
+    message: Operation must include at least one tag.
+    severity: warn
+    given: '$.paths[*][*]'
+    then:
+      field: tags
+      function: defined
+
+  silverpop-description-required:
+    description: All operations must have a description.
+    message: Operation must include a description.
+    severity: warn
+    given: '$.paths[*][*]'
+    then:
+      field: description
+      function: defined
+
+  silverpop-response-200-required:
+    description: All operations must define a 200 success response.
+    message: Operation must define a 200 response.
+    severity: error
+    given: '$.paths[*][*].responses'
+    then:
+      field: '200'
+      function: defined
+
+  silverpop-bearer-auth:
+    description: Non-authentication operations must use BearerAuth.
+    message: Operation must declare BearerAuth security.
+    severity: warn
+    given: '$.paths[?(!@property.match(/oauth/))][*]'
+    then:
+      field: security
+      function: defined
+
+  silverpop-path-parameters-described:
+    description: All path parameters must have descriptions.
+    message: Path parameter "{{value}}" must have a description.
+    severity: warn
+    given: '$.paths[*][*].parameters[?(@.in == "path")]'
+    then:
+      field: description
+      function: defined

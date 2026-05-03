@@ -1,0 +1,713 @@
+openapi: 3.0.3
+info:
+  title: Silverpop Engage API (Acoustic Campaign)
+  description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
+  version: '1.0'
+  contact:
+    name: Acoustic Developer Support
+    url: https://developer.goacoustic.com
+  termsOfService: https://www.goacoustic.com/terms-of-use
+externalDocs:
+  description: Acoustic Campaign API Documentation
+  url: https://developer.goacoustic.com/acoustic-campaign/reference/overview
+servers:
+- url: https://api-campaign-us-1.goacoustic.com
+  description: US Production
+- url: https://api-campaign-eu-1.goacoustic.com
+  description: EU Production
+security:
+- BearerAuth: []
+tags:
+- name: Authentication
+  description: OAuth 2.0 token management
+- name: Contacts
+  description: Contact (recipient) list management
+- name: Campaigns
+  description: Email campaign management
+- name: Transactional
+  description: Transactional email and SMS messaging
+- name: Reports
+  description: Campaign reporting and analytics
+- name: Programs
+  description: Marketing automation program management
+paths:
+  /oauth/token:
+    post:
+      operationId: createAccessToken
+      summary: Create Access Token
+      description: Generate an OAuth 2.0 access token using client credentials (client_id, client_secret, and refresh_token).
+      tags:
+      - Authentication
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - grant_type
+              - client_id
+              - client_secret
+              - refresh_token
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                  - refresh_token
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                refresh_token:
+                  type: string
+      responses:
+        '200':
+          description: Access token issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+        '401':
+          description: Invalid credentials
+  /rest/databases:
+    get:
+      operationId: listDatabases
+      summary: List Databases
+      description: Retrieve all contact databases (lists) in the account.
+      tags:
+      - Contacts
+      responses:
+        '200':
+          description: List of databases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  databases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Database'
+        '401':
+          description: Unauthorized
+  /rest/databases/{database_id}/contacts:
+    get:
+      operationId: listContacts
+      summary: List Contacts
+      description: Retrieve contacts from a specific database with optional filtering.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Contact database identifier
+      - name: count
+        in: query
+        schema:
+          type: integer
+          default: 100
+          maximum: 1000
+        description: Number of contacts to return
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Pagination offset
+      responses:
+        '200':
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+                  total_count:
+                    type: integer
+    post:
+      operationId: addContact
+      summary: Add Contact
+      description: Add a new contact to a specific database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Contact database identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactInput'
+      responses:
+        '200':
+          description: Contact added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact_id:
+                    type: string
+        '400':
+          description: Invalid contact data
+  /rest/databases/{database_id}/contacts/{contact_id}:
+    get:
+      operationId: getContact
+      summary: Get Contact
+      description: Retrieve a specific contact's details from a database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Contact details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '404':
+          description: Contact not found
+    put:
+      operationId: updateContact
+      summary: Update Contact
+      description: Update an existing contact's attributes in a database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactInput'
+      responses:
+        '200':
+          description: Contact updated
+    delete:
+      operationId: removeContact
+      summary: Remove Contact
+      description: Remove (opt-out) a contact from a database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Contact removed
+  /rest/mailings:
+    get:
+      operationId: listCampaigns
+      summary: List Campaigns
+      description: Retrieve all email campaigns (mailings) in the account.
+      tags:
+      - Campaigns
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - draft
+          - scheduled
+          - sent
+          - canceled
+        description: Filter by campaign status
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mailings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Campaign'
+    post:
+      operationId: createCampaign
+      summary: Create Campaign
+      description: Create a new email campaign mailing.
+      tags:
+      - Campaigns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignInput'
+      responses:
+        '200':
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mailing_id:
+                    type: string
+  /rest/mailings/{mailing_id}:
+    get:
+      operationId: getCampaign
+      summary: Get Campaign
+      description: Retrieve details of a specific email campaign.
+      tags:
+      - Campaigns
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        '404':
+          description: Campaign not found
+  /rest/mailings/{mailing_id}/schedule:
+    post:
+      operationId: scheduleCampaign
+      summary: Schedule Campaign
+      description: Schedule a campaign mailing for delivery at a specific date and time.
+      tags:
+      - Campaigns
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - schedule_date
+              properties:
+                schedule_date:
+                  type: string
+                  format: date-time
+                  description: Date and time to send the campaign
+      responses:
+        '200':
+          description: Campaign scheduled
+  /rest/transact/xmlapi:
+    post:
+      operationId: sendTransactionalMessage
+      summary: Send Transactional Message
+      description: Send a transactional email or SMS message to a single recipient using an XML API call.
+      tags:
+      - Transactional
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: string
+              description: XML request body per Silverpop Transact XML API specification
+      responses:
+        '200':
+          description: Message queued for delivery
+          content:
+            application/xml:
+              schema:
+                type: string
+  /rest/reports/mailings/{mailing_id}/summary:
+    get:
+      operationId: getCampaignSummary
+      summary: Get Campaign Summary
+      description: Retrieve aggregate performance metrics for a sent campaign.
+      tags:
+      - Reports
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Campaign summary metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignReport'
+        '404':
+          description: Campaign not found
+  /rest/reports/mailings/{mailing_id}/opens:
+    get:
+      operationId: getCampaignOpens
+      summary: Get Campaign Opens
+      description: Retrieve detailed open event data for a sent campaign.
+      tags:
+      - Reports
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        schema:
+          type: integer
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: Open event records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  opens:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EngagementEvent'
+  /rest/reports/mailings/{mailing_id}/clicks:
+    get:
+      operationId: getCampaignClicks
+      summary: Get Campaign Clicks
+      description: Retrieve detailed click-through event data for a sent campaign.
+      tags:
+      - Reports
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        schema:
+          type: integer
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: Click event records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clicks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EngagementEvent'
+  /rest/programs:
+    get:
+      operationId: listPrograms
+      summary: List Programs
+      description: Retrieve all marketing automation programs in the account.
+      tags:
+      - Programs
+      responses:
+        '200':
+          description: List of programs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  programs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Program'
+  /rest/programs/{program_id}:
+    get:
+      operationId: getProgram
+      summary: Get Program
+      description: Retrieve details and status of a specific marketing automation program.
+      tags:
+      - Programs
+      parameters:
+      - name: program_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Program details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        '404':
+          description: Program not found
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token. Obtain via POST /oauth/token.
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: bearer
+        expires_in:
+          type: integer
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Database identifier
+        name:
+          type: string
+          description: Database name
+        type:
+          type: string
+          enum:
+          - database
+          - query
+          - relational_table
+        contact_count:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Contact identifier
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        opt_in_status:
+          type: string
+          enum:
+          - opted_in
+          - opted_out
+          - pending
+        custom_fields:
+          type: object
+          additionalProperties: true
+          description: Custom field key-value pairs
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+    ContactInput:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        custom_fields:
+          type: object
+          additionalProperties: true
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Campaign (mailing) identifier
+        name:
+          type: string
+          description: Campaign name
+        subject:
+          type: string
+          description: Email subject line
+        status:
+          type: string
+          enum:
+          - draft
+          - scheduled
+          - sent
+          - canceled
+        database_id:
+          type: string
+          description: Target database identifier
+        from_name:
+          type: string
+        from_email:
+          type: string
+          format: email
+        scheduled_date:
+          type: string
+          format: date-time
+        sent_date:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+    CampaignInput:
+      type: object
+      required:
+      - name
+      - subject
+      - database_id
+      - from_name
+      - from_email
+      properties:
+        name:
+          type: string
+        subject:
+          type: string
+        database_id:
+          type: string
+        from_name:
+          type: string
+        from_email:
+          type: string
+          format: email
+        html_body:
+          type: string
+          description: HTML email body
+        text_body:
+          type: string
+          description: Plain text email body
+    CampaignReport:
+      type: object
+      properties:
+        mailing_id:
+          type: string
+        name:
+          type: string
+        sent_count:
+          type: integer
+        delivered_count:
+          type: integer
+        open_count:
+          type: integer
+        unique_open_count:
+          type: integer
+        click_count:
+          type: integer
+        unique_click_count:
+          type: integer
+        unsubscribe_count:
+          type: integer
+        bounce_count:
+          type: integer
+        open_rate:
+          type: number
+          format: float
+        click_rate:
+          type: number
+          format: float
+    EngagementEvent:
+      type: object
+      properties:
+        contact_id:
+          type: string
+        email:
+          type: string
+          format: email
+        timestamp:
+          type: string
+          format: date-time
+        url:
+          type: string
+          description: Clicked URL (for click events)
+        user_agent:
+          type: string
+        ip_address:
+          type: string
+    Program:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - draft
+        type:
+          type: string
+          enum:
+          - drip
+          - trigger
+          - batch
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time

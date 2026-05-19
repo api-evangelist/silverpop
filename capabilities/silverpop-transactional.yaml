@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Silverpop Engage API (Acoustic Campaign) — Transactional
+  description: 'Silverpop Engage API (Acoustic Campaign) — Transactional. 1 operations. Lead operation: Send Transactional
+    Message. Self-contained Naftiko capability covering one Silverpop business surface.'
+  tags:
+  - Silverpop
+  - Transactional
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SILVERPOP_API_KEY: SILVERPOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: silverpop-transactional
+    baseUri: https://api-campaign-us-1.goacoustic.com
+    description: Silverpop Engage API (Acoustic Campaign) — Transactional business capability. Self-contained, no shared references.
+    resources:
+    - name: rest-transact-xmlapi
+      path: /rest/transact/xmlapi
+      operations:
+      - name: sendtransactionalmessage
+        method: POST
+        description: Send Transactional Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SILVERPOP_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: silverpop-transactional-rest
+    port: 8080
+    description: REST adapter for Silverpop Engage API (Acoustic Campaign) — Transactional. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/transact/xmlapi
+      name: rest-transact-xmlapi
+      description: REST surface for rest-transact-xmlapi.
+      operations:
+      - method: POST
+        name: sendtransactionalmessage
+        description: Send Transactional Message
+        call: silverpop-transactional.sendtransactionalmessage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: silverpop-transactional-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Silverpop Engage API (Acoustic Campaign) — Transactional. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: send-transactional-message
+      description: Send Transactional Message
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: silverpop-transactional.sendtransactionalmessage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

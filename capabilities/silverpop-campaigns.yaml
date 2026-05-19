@@ -1,0 +1,203 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Silverpop Engage API (Acoustic Campaign) — Campaigns
+  description: 'Silverpop Engage API (Acoustic Campaign) — Campaigns. 4 operations. Lead operation: List Campaigns. Self-contained
+    Naftiko capability covering one Silverpop business surface.'
+  tags:
+  - Silverpop
+  - Campaigns
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SILVERPOP_API_KEY: SILVERPOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: silverpop-campaigns
+    baseUri: https://api-campaign-us-1.goacoustic.com
+    description: Silverpop Engage API (Acoustic Campaign) — Campaigns business capability. Self-contained, no shared references.
+    resources:
+    - name: rest-mailings
+      path: /rest/mailings
+      operations:
+      - name: listcampaigns
+        method: GET
+        description: List Campaigns
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter by campaign status
+      - name: createcampaign
+        method: POST
+        description: Create Campaign
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: rest-mailings-mailing_id
+      path: /rest/mailings/{mailing_id}
+      operations:
+      - name: getcampaign
+        method: GET
+        description: Get Campaign
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: mailing_id
+          in: path
+          type: string
+          required: true
+    - name: rest-mailings-mailing_id-schedule
+      path: /rest/mailings/{mailing_id}/schedule
+      operations:
+      - name: schedulecampaign
+        method: POST
+        description: Schedule Campaign
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: mailing_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SILVERPOP_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: silverpop-campaigns-rest
+    port: 8080
+    description: REST adapter for Silverpop Engage API (Acoustic Campaign) — Campaigns. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/mailings
+      name: rest-mailings
+      description: REST surface for rest-mailings.
+      operations:
+      - method: GET
+        name: listcampaigns
+        description: List Campaigns
+        call: silverpop-campaigns.listcampaigns
+        with:
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcampaign
+        description: Create Campaign
+        call: silverpop-campaigns.createcampaign
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mailings/{mailing-id}
+      name: rest-mailings-mailing-id
+      description: REST surface for rest-mailings-mailing_id.
+      operations:
+      - method: GET
+        name: getcampaign
+        description: Get Campaign
+        call: silverpop-campaigns.getcampaign
+        with:
+          mailing_id: rest.mailing_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/mailings/{mailing-id}/schedule
+      name: rest-mailings-mailing-id-schedule
+      description: REST surface for rest-mailings-mailing_id-schedule.
+      operations:
+      - method: POST
+        name: schedulecampaign
+        description: Schedule Campaign
+        call: silverpop-campaigns.schedulecampaign
+        with:
+          mailing_id: rest.mailing_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: silverpop-campaigns-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Silverpop Engage API (Acoustic Campaign) — Campaigns. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: list-campaigns
+      description: List Campaigns
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: silverpop-campaigns.listcampaigns
+      with:
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-campaign
+      description: Create Campaign
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: silverpop-campaigns.createcampaign
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-campaign
+      description: Get Campaign
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: silverpop-campaigns.getcampaign
+      with:
+        mailing_id: tools.mailing_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: schedule-campaign
+      description: Schedule Campaign
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: silverpop-campaigns.schedulecampaign
+      with:
+        mailing_id: tools.mailing_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

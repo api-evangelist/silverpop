@@ -38,6 +38,8 @@ apis:
   - FN: Acoustic (Silverpop) Support
     url: https://developer.goacoustic.com
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/silverpop-systems-inc
 - type: GitHubOrganization
   url: https://github.com/Silverpop
 - type: DeveloperPortal

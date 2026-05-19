@@ -1,0 +1,81 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Silverpop Engage API (Acoustic Campaign) — Authentication
+  description: 'Silverpop Engage API (Acoustic Campaign) — Authentication. 1 operations. Lead operation: Create Access Token.
+    Self-contained Naftiko capability covering one Silverpop business surface.'
+  tags:
+  - Silverpop
+  - Authentication
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SILVERPOP_API_KEY: SILVERPOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: silverpop-authentication
+    baseUri: https://api-campaign-us-1.goacoustic.com
+    description: Silverpop Engage API (Acoustic Campaign) — Authentication business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: oauth-token
+      path: /oauth/token
+      operations:
+      - name: createaccesstoken
+        method: POST
+        description: Create Access Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SILVERPOP_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: silverpop-authentication-rest
+    port: 8080
+    description: REST adapter for Silverpop Engage API (Acoustic Campaign) — Authentication. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/oauth/token
+      name: oauth-token
+      description: REST surface for oauth-token.
+      operations:
+      - method: POST
+        name: createaccesstoken
+        description: Create Access Token
+        call: silverpop-authentication.createaccesstoken
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: silverpop-authentication-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Silverpop Engage API (Acoustic Campaign) — Authentication. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: create-access-token
+      description: Create Access Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: silverpop-authentication.createaccesstoken
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

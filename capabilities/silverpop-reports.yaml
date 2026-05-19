@@ -1,0 +1,181 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Silverpop Engage API (Acoustic Campaign) — Reports
+  description: 'Silverpop Engage API (Acoustic Campaign) — Reports. 3 operations. Lead operation: Get Campaign Clicks. Self-contained
+    Naftiko capability covering one Silverpop business surface.'
+  tags:
+  - Silverpop
+  - Reports
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SILVERPOP_API_KEY: SILVERPOP_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: silverpop-reports
+    baseUri: https://api-campaign-us-1.goacoustic.com
+    description: Silverpop Engage API (Acoustic Campaign) — Reports business capability. Self-contained, no shared references.
+    resources:
+    - name: rest-reports-mailings-mailing_id-clicks
+      path: /rest/reports/mailings/{mailing_id}/clicks
+      operations:
+      - name: getcampaignclicks
+        method: GET
+        description: Get Campaign Clicks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: mailing_id
+          in: path
+          type: string
+          required: true
+        - name: count
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: integer
+    - name: rest-reports-mailings-mailing_id-opens
+      path: /rest/reports/mailings/{mailing_id}/opens
+      operations:
+      - name: getcampaignopens
+        method: GET
+        description: Get Campaign Opens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: mailing_id
+          in: path
+          type: string
+          required: true
+        - name: count
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: integer
+    - name: rest-reports-mailings-mailing_id-summary
+      path: /rest/reports/mailings/{mailing_id}/summary
+      operations:
+      - name: getcampaignsummary
+        method: GET
+        description: Get Campaign Summary
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: mailing_id
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SILVERPOP_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: silverpop-reports-rest
+    port: 8080
+    description: REST adapter for Silverpop Engage API (Acoustic Campaign) — Reports. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/reports/mailings/{mailing-id}/clicks
+      name: rest-reports-mailings-mailing-id-clicks
+      description: REST surface for rest-reports-mailings-mailing_id-clicks.
+      operations:
+      - method: GET
+        name: getcampaignclicks
+        description: Get Campaign Clicks
+        call: silverpop-reports.getcampaignclicks
+        with:
+          mailing_id: rest.mailing_id
+          count: rest.count
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/reports/mailings/{mailing-id}/opens
+      name: rest-reports-mailings-mailing-id-opens
+      description: REST surface for rest-reports-mailings-mailing_id-opens.
+      operations:
+      - method: GET
+        name: getcampaignopens
+        description: Get Campaign Opens
+        call: silverpop-reports.getcampaignopens
+        with:
+          mailing_id: rest.mailing_id
+          count: rest.count
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/reports/mailings/{mailing-id}/summary
+      name: rest-reports-mailings-mailing-id-summary
+      description: REST surface for rest-reports-mailings-mailing_id-summary.
+      operations:
+      - method: GET
+        name: getcampaignsummary
+        description: Get Campaign Summary
+        call: silverpop-reports.getcampaignsummary
+        with:
+          mailing_id: rest.mailing_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: silverpop-reports-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Silverpop Engage API (Acoustic Campaign) — Reports. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: get-campaign-clicks
+      description: Get Campaign Clicks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: silverpop-reports.getcampaignclicks
+      with:
+        mailing_id: tools.mailing_id
+        count: tools.count
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-campaign-opens
+      description: Get Campaign Opens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: silverpop-reports.getcampaignopens
+      with:
+        mailing_id: tools.mailing_id
+        count: tools.count
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-campaign-summary
+      description: Get Campaign Summary
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: silverpop-reports.getcampaignsummary
+      with:
+        mailing_id: tools.mailing_id
+      outputParameters:
+      - type: object
+        mapping: $.

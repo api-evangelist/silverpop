@@ -1,0 +1,422 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Silverpop Engage API (Acoustic Campaign)",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/oauth/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "grant_type",
+                  "value": ""
+                },
+                {
+                  "name": "client_id",
+                  "value": ""
+                },
+                {
+                  "name": "client_secret",
+                  "value": ""
+                },
+                {
+                  "name": "refresh_token",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Generate an OAuth 2.0 access token using client credentials (client_id, client_secret, and refresh_token)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases"
+          },
+          "docs": "Retrieve all contact databases (lists) in the account."
+        },
+        {
+          "info": {
+            "name": "List Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path",
+                "description": "Contact database identifier"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset"
+              }
+            ]
+          },
+          "docs": "Retrieve contacts from a specific database with optional filtering."
+        },
+        {
+          "info": {
+            "name": "Add Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path",
+                "description": "Contact database identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new contact to a specific database."
+        },
+        {
+          "info": {
+            "name": "Get Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts/:contact_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific contact's details from a database."
+        },
+        {
+          "info": {
+            "name": "Update Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts/:contact_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contact's attributes in a database."
+        },
+        {
+          "info": {
+            "name": "Remove Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts/:contact_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove (opt-out) a contact from a database."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Campaigns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by campaign status"
+              }
+            ]
+          },
+          "docs": "Retrieve all email campaigns (mailings) in the account."
+        },
+        {
+          "info": {
+            "name": "Create Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new email campaign mailing."
+        },
+        {
+          "info": {
+            "name": "Get Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings/:mailing_id",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific email campaign."
+        },
+        {
+          "info": {
+            "name": "Schedule Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings/:mailing_id/schedule",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule a campaign mailing for delivery at a specific date and time."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactional",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Transactional Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/transact/xmlapi"
+          },
+          "docs": "Send a transactional email or SMS message to a single recipient using an XML API call."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Campaign Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/reports/mailings/:mailing_id/summary",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve aggregate performance metrics for a sent campaign."
+        },
+        {
+          "info": {
+            "name": "Get Campaign Opens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/reports/mailings/:mailing_id/opens",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve detailed open event data for a sent campaign."
+        },
+        {
+          "info": {
+            "name": "Get Campaign Clicks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/reports/mailings/:mailing_id/clicks",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve detailed click-through event data for a sent campaign."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Programs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Programs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/programs"
+          },
+          "docs": "Retrieve all marketing automation programs in the account."
+        },
+        {
+          "info": {
+            "name": "Get Program",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/programs/:program_id",
+            "params": [
+              {
+                "name": "program_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details and status of a specific marketing automation program."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

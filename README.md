@@ -1,79 +1,60 @@
-# Silverpop
+# Silverpop (silverpop)
 
 Silverpop (now Acoustic, formerly IBM Watson Campaign Automation) is a digital marketing automation platform offering email marketing, marketing automation, mobile messaging, and campaign management. The platform provides XML and REST APIs for list management, contact data, campaign execution, transactional messaging, and reporting.
 
-- **Website:** https://www.goacoustic.com
-- **Developer Portal:** https://developer.goacoustic.com
-- **API Documentation:** https://developer.goacoustic.com/acoustic-campaign/reference/overview
-- **GitHub:** https://github.com/Silverpop
-- **Node.js SDK:** https://github.com/Silverpop/node-engage
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/apis.yml)
 
-## API
+## Tags
 
-The Silverpop/Acoustic Campaign REST API is available at:
-- **US:** https://api-campaign-us-1.goacoustic.com
-- **EU:** https://api-campaign-eu-1.goacoustic.com
+- Email Marketing
+- Marketing Automation
+- Campaign Management
+- Digital Marketing
 
-Authentication uses OAuth 2.0 with client credentials (client_id, client_secret, refresh_token).
+## Timestamps
 
-## OpenAPI Specs
+- **Created:** 2026-05-02
+- **Modified:** 2026-05-02
 
-| Name | Description |
-|---|---|
-| [Silverpop Engage API](openapi/silverpop-openapi.yml) | REST API covering contacts, campaigns, transactional messaging, reporting, and programs |
+## APIs
 
-## Capabilities
+### Silverpop Engage XML API
 
-### Shared Definitions
+The Silverpop Engage XML API (now Acoustic Campaign) provides XML-based endpoints for managing contact lists, sending email campaigns, tracking engagement, and administering marketing automation workflows. Supports OAuth 2.0 authentication with client credentials.
 
-| File | Description |
-|---|---|
-| [silverpop](capabilities/shared/silverpop.yaml) | Silverpop/Acoustic Campaign REST API consumed definition |
+- **Human URL:** [https://developer.goacoustic.com/acoustic-campaign/reference/overview](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
+- **Base URL:** `https://api-campaign-us-1.goacoustic.com`
 
-### Workflow Capabilities
+#### Tags
 
-| Capability | Description |
-|---|---|
-| [Email Marketing](capabilities/email-marketing.yaml) | End-to-end email marketing: contacts, campaigns, scheduling, reporting, automation |
+- Email Marketing
+- Campaign Management
+- Contact Management
+- Marketing Automation
 
-## Rules
+#### Properties
 
-| Name | Description |
-|---|---|
-| [Silverpop Spectral Rules](rules/silverpop-rules.yml) | Spectral ruleset enforcing Silverpop API conventions |
+- [Documentation](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/openapi/silverpop-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [GitHub Organization](https://github.com/Silverpop)
+- [Node J S S D K](https://github.com/Silverpop/node-engage)
+- [Authentication](https://developer.goacoustic.com/acoustic-campaign/docs/authentication)
+- [Spectral Rules](https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/rules/silverpop-rules.yml)
+- [Postman Collection](collections/silverpop.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/silverpop.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
-## JSON Schema
+## Common Properties
 
-| Name | Description |
-|---|---|
-| [Contact Schema](json-schema/silverpop-contact-schema.json) | Schema for the Silverpop Contact resource |
-
-## JSON Structure
-
-| Name | Description |
-|---|---|
-| [Contact Structure](json-structure/silverpop-contact-structure.json) | Structural documentation for Contact, Database, and Campaign resources |
-
-## JSON-LD
-
-| Name | Description |
-|---|---|
-| [Silverpop Context](json-ld/silverpop-context.jsonld) | JSON-LD context mapping Silverpop terms to schema.org |
-
-## Examples
-
-| Name | Description |
-|---|---|
-| [Add Contact](examples/silverpop-add-contact-example.json) | Example: adding a contact to a database |
-
-## Vocabulary
-
-| Name | Description |
-|---|---|
-| [Silverpop Vocabulary](vocabulary/silverpop-vocabulary.yml) | Domain terms for the email marketing platform |
+- [LinkedIn](https://www.linkedin.com/company/silverpop-systems-inc)
+- [GitHub Organization](https://github.com/Silverpop)
+- [Developer Portal](https://developer.goacoustic.com)
+- [Documentation](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
+- [Authentication](https://developer.goacoustic.com/acoustic-campaign/docs/authentication)
+- [Terms of Service](https://www.goacoustic.com/terms-of-use)
+- [Privacy Policy](https://www.goacoustic.com/privacy-notice)
 
 ## Maintainers
 
-**API Evangelist**
-- URL: https://apievangelist.com
-- Email: info@apievangelist.com
+**FN:** API Evangelist
+**Email:** info@apievangelist.com
+**URL:** https://apievangelist.com

@@ -38,6 +38,10 @@ apis:
     - FN: Acoustic (Silverpop) Support
       url: https://developer.goacoustic.com
 common:
+  - type: DomainSecurity
+    url: security/silverpop-domain-security.yml
+  - type: Authentication
+    url: authentication/silverpop-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/silverpop-systems-inc
   - type: GitHubOrganization

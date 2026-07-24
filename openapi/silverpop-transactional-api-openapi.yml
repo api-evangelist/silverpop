@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: Silverpop Engage API (Acoustic Campaign) Authentication Transactional API
+  description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
+  version: '1.0'
+  contact:
+    name: Acoustic Developer Support
+    url: https://developer.goacoustic.com
+  termsOfService: https://www.goacoustic.com/terms-of-use
+servers:
+- url: https://api-campaign-us-1.goacoustic.com
+  description: US Production
+- url: https://api-campaign-eu-1.goacoustic.com
+  description: EU Production
+security:
+- BearerAuth: []
+tags:
+- name: Transactional
+  description: Transactional email and SMS messaging
+paths:
+  /rest/transact/xmlapi:
+    post:
+      operationId: sendTransactionalMessage
+      summary: Send Transactional Message
+      description: Send a transactional email or SMS message to a single recipient using an XML API call.
+      tags:
+      - Transactional
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: string
+              description: XML request body per Silverpop Transact XML API specification
+      responses:
+        '200':
+          description: Message queued for delivery
+          content:
+            application/xml:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token. Obtain via POST /oauth/token.
+externalDocs:
+  description: Acoustic Campaign API Documentation
+  url: https://developer.goacoustic.com/acoustic-campaign/reference/overview

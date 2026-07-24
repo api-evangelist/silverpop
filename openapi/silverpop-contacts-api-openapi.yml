@@ -1,0 +1,263 @@
+openapi: 3.0.3
+info:
+  title: Silverpop Engage API (Acoustic Campaign) Authentication Contacts API
+  description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
+  version: '1.0'
+  contact:
+    name: Acoustic Developer Support
+    url: https://developer.goacoustic.com
+  termsOfService: https://www.goacoustic.com/terms-of-use
+servers:
+- url: https://api-campaign-us-1.goacoustic.com
+  description: US Production
+- url: https://api-campaign-eu-1.goacoustic.com
+  description: EU Production
+security:
+- BearerAuth: []
+tags:
+- name: Contacts
+  description: Contact (recipient) list management
+paths:
+  /rest/databases:
+    get:
+      operationId: listDatabases
+      summary: List Databases
+      description: Retrieve all contact databases (lists) in the account.
+      tags:
+      - Contacts
+      responses:
+        '200':
+          description: List of databases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  databases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Database'
+        '401':
+          description: Unauthorized
+  /rest/databases/{database_id}/contacts:
+    get:
+      operationId: listContacts
+      summary: List Contacts
+      description: Retrieve contacts from a specific database with optional filtering.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Contact database identifier
+      - name: count
+        in: query
+        schema:
+          type: integer
+          default: 100
+          maximum: 1000
+        description: Number of contacts to return
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Pagination offset
+      responses:
+        '200':
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+                  total_count:
+                    type: integer
+    post:
+      operationId: addContact
+      summary: Add Contact
+      description: Add a new contact to a specific database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Contact database identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactInput'
+      responses:
+        '200':
+          description: Contact added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contact_id:
+                    type: string
+        '400':
+          description: Invalid contact data
+  /rest/databases/{database_id}/contacts/{contact_id}:
+    get:
+      operationId: getContact
+      summary: Get Contact
+      description: Retrieve a specific contact's details from a database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Contact details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '404':
+          description: Contact not found
+    put:
+      operationId: updateContact
+      summary: Update Contact
+      description: Update an existing contact's attributes in a database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactInput'
+      responses:
+        '200':
+          description: Contact updated
+    delete:
+      operationId: removeContact
+      summary: Remove Contact
+      description: Remove (opt-out) a contact from a database.
+      tags:
+      - Contacts
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Contact removed
+components:
+  schemas:
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Database identifier
+        name:
+          type: string
+          description: Database name
+        type:
+          type: string
+          enum:
+          - database
+          - query
+          - relational_table
+        contact_count:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+    ContactInput:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        custom_fields:
+          type: object
+          additionalProperties: true
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Contact identifier
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        opt_in_status:
+          type: string
+          enum:
+          - opted_in
+          - opted_out
+          - pending
+        custom_fields:
+          type: object
+          additionalProperties: true
+          description: Custom field key-value pairs
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token. Obtain via POST /oauth/token.
+externalDocs:
+  description: Acoustic Campaign API Documentation
+  url: https://developer.goacoustic.com/acoustic-campaign/reference/overview

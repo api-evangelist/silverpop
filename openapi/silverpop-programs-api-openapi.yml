@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Silverpop Engage API (Acoustic Campaign) Authentication Programs API
+  description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
+  version: '1.0'
+  contact:
+    name: Acoustic Developer Support
+    url: https://developer.goacoustic.com
+  termsOfService: https://www.goacoustic.com/terms-of-use
+servers:
+- url: https://api-campaign-us-1.goacoustic.com
+  description: US Production
+- url: https://api-campaign-eu-1.goacoustic.com
+  description: EU Production
+security:
+- BearerAuth: []
+tags:
+- name: Programs
+  description: Marketing automation program management
+paths:
+  /rest/programs:
+    get:
+      operationId: listPrograms
+      summary: List Programs
+      description: Retrieve all marketing automation programs in the account.
+      tags:
+      - Programs
+      responses:
+        '200':
+          description: List of programs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  programs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Program'
+  /rest/programs/{program_id}:
+    get:
+      operationId: getProgram
+      summary: Get Program
+      description: Retrieve details and status of a specific marketing automation program.
+      tags:
+      - Programs
+      parameters:
+      - name: program_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Program details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Program'
+        '404':
+          description: Program not found
+components:
+  schemas:
+    Program:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - paused
+          - draft
+        type:
+          type: string
+          enum:
+          - drip
+          - trigger
+          - batch
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token. Obtain via POST /oauth/token.
+externalDocs:
+  description: Acoustic Campaign API Documentation
+  url: https://developer.goacoustic.com/acoustic-campaign/reference/overview

@@ -1,0 +1,195 @@
+openapi: 3.0.3
+info:
+  title: Silverpop Engage API (Acoustic Campaign) Authentication Campaigns API
+  description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
+  version: '1.0'
+  contact:
+    name: Acoustic Developer Support
+    url: https://developer.goacoustic.com
+  termsOfService: https://www.goacoustic.com/terms-of-use
+servers:
+- url: https://api-campaign-us-1.goacoustic.com
+  description: US Production
+- url: https://api-campaign-eu-1.goacoustic.com
+  description: EU Production
+security:
+- BearerAuth: []
+tags:
+- name: Campaigns
+  description: Email campaign management
+paths:
+  /rest/mailings:
+    get:
+      operationId: listCampaigns
+      summary: List Campaigns
+      description: Retrieve all email campaigns (mailings) in the account.
+      tags:
+      - Campaigns
+      parameters:
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - draft
+          - scheduled
+          - sent
+          - canceled
+        description: Filter by campaign status
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mailings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Campaign'
+    post:
+      operationId: createCampaign
+      summary: Create Campaign
+      description: Create a new email campaign mailing.
+      tags:
+      - Campaigns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignInput'
+      responses:
+        '200':
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mailing_id:
+                    type: string
+  /rest/mailings/{mailing_id}:
+    get:
+      operationId: getCampaign
+      summary: Get Campaign
+      description: Retrieve details of a specific email campaign.
+      tags:
+      - Campaigns
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        '404':
+          description: Campaign not found
+  /rest/mailings/{mailing_id}/schedule:
+    post:
+      operationId: scheduleCampaign
+      summary: Schedule Campaign
+      description: Schedule a campaign mailing for delivery at a specific date and time.
+      tags:
+      - Campaigns
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - schedule_date
+              properties:
+                schedule_date:
+                  type: string
+                  format: date-time
+                  description: Date and time to send the campaign
+      responses:
+        '200':
+          description: Campaign scheduled
+components:
+  schemas:
+    CampaignInput:
+      type: object
+      required:
+      - name
+      - subject
+      - database_id
+      - from_name
+      - from_email
+      properties:
+        name:
+          type: string
+        subject:
+          type: string
+        database_id:
+          type: string
+        from_name:
+          type: string
+        from_email:
+          type: string
+          format: email
+        html_body:
+          type: string
+          description: HTML email body
+        text_body:
+          type: string
+          description: Plain text email body
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Campaign (mailing) identifier
+        name:
+          type: string
+          description: Campaign name
+        subject:
+          type: string
+          description: Email subject line
+        status:
+          type: string
+          enum:
+          - draft
+          - scheduled
+          - sent
+          - canceled
+        database_id:
+          type: string
+          description: Target database identifier
+        from_name:
+          type: string
+        from_email:
+          type: string
+          format: email
+        scheduled_date:
+          type: string
+          format: date-time
+        sent_date:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token. Obtain via POST /oauth/token.
+externalDocs:
+  description: Acoustic Campaign API Documentation
+  url: https://developer.goacoustic.com/acoustic-campaign/reference/overview

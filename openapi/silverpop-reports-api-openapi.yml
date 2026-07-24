@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Silverpop Engage API (Acoustic Campaign) Authentication Reports API
+  description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
+  version: '1.0'
+  contact:
+    name: Acoustic Developer Support
+    url: https://developer.goacoustic.com
+  termsOfService: https://www.goacoustic.com/terms-of-use
+servers:
+- url: https://api-campaign-us-1.goacoustic.com
+  description: US Production
+- url: https://api-campaign-eu-1.goacoustic.com
+  description: EU Production
+security:
+- BearerAuth: []
+tags:
+- name: Reports
+  description: Campaign reporting and analytics
+paths:
+  /rest/reports/mailings/{mailing_id}/summary:
+    get:
+      operationId: getCampaignSummary
+      summary: Get Campaign Summary
+      description: Retrieve aggregate performance metrics for a sent campaign.
+      tags:
+      - Reports
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Campaign summary metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignReport'
+        '404':
+          description: Campaign not found
+  /rest/reports/mailings/{mailing_id}/opens:
+    get:
+      operationId: getCampaignOpens
+      summary: Get Campaign Opens
+      description: Retrieve detailed open event data for a sent campaign.
+      tags:
+      - Reports
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        schema:
+          type: integer
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: Open event records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  opens:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EngagementEvent'
+  /rest/reports/mailings/{mailing_id}/clicks:
+    get:
+      operationId: getCampaignClicks
+      summary: Get Campaign Clicks
+      description: Retrieve detailed click-through event data for a sent campaign.
+      tags:
+      - Reports
+      parameters:
+      - name: mailing_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: count
+        in: query
+        schema:
+          type: integer
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: Click event records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clicks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EngagementEvent'
+components:
+  schemas:
+    CampaignReport:
+      type: object
+      properties:
+        mailing_id:
+          type: string
+        name:
+          type: string
+        sent_count:
+          type: integer
+        delivered_count:
+          type: integer
+        open_count:
+          type: integer
+        unique_open_count:
+          type: integer
+        click_count:
+          type: integer
+        unique_click_count:
+          type: integer
+        unsubscribe_count:
+          type: integer
+        bounce_count:
+          type: integer
+        open_rate:
+          type: number
+          format: float
+        click_rate:
+          type: number
+          format: float
+    EngagementEvent:
+      type: object
+      properties:
+        contact_id:
+          type: string
+        email:
+          type: string
+          format: email
+        timestamp:
+          type: string
+          format: date-time
+        url:
+          type: string
+          description: Clicked URL (for click events)
+        user_agent:
+          type: string
+        ip_address:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 access token. Obtain via POST /oauth/token.
+externalDocs:
+  description: Acoustic Campaign API Documentation
+  url: https://developer.goacoustic.com/acoustic-campaign/reference/overview

@@ -1,0 +1,24 @@
+{
+  "provider": "silverpop",
+  "sources": [
+    "silverpop-authentication-api-openapi.yml",
+    "silverpop-campaigns-api-openapi.yml",
+    "silverpop-contacts-api-openapi.yml",
+    "silverpop-programs-api-openapi.yml",
+    "silverpop-reports-api-openapi.yml",
+    "silverpop-transactional-api-openapi.yml"
+  ],
+  "outputs": [
+    "silverpop-authentication-api-openapi.yml",
+    "silverpop-campaigns-api-openapi.yml",
+    "silverpop-contacts-api-openapi.yml",
+    "silverpop-programs-api-openapi.yml",
+    "silverpop-reports-api-openapi.yml",
+    "silverpop-transactional-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

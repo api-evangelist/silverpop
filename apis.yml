@@ -1,28 +1,63 @@
 name: Silverpop
-description: Silverpop (now Acoustic, formerly IBM Watson Campaign Automation) is a digital marketing automation platform offering email marketing, marketing automation, mobile messaging, and campaign management. The platform provides XML and REST APIs for list management, contact data, campaign execution, transactional messaging, and reporting.
+description: >-
+  Silverpop Engage is the email marketing, marketing automation and transactional
+  messaging API now sold as Acoustic Campaign, and one of the longest-lived commercial
+  marketing APIs still in production. The operation names an integrator calls today —
+  AddRecipient, ScheduleMailing, RawRecipientDataExport — are the original Silverpop
+  names, unchanged through acquisition by IBM in 2014 (as Watson Campaign Automation) and
+  the carve-out to Acoustic in 2019; silverpop.com now 301s to acoustic.com and the
+  developer portal lives at developer.goacoustic.com. Two surfaces sit behind one
+  per-tenant host: a single-endpoint XML API at /XMLAPI carrying roughly sixty operations
+  across contact databases, contact lists, relational tables, scoring models, templates
+  and mailings, dynamic content and reporting, and a narrower JSON REST API at /rest with
+  eleven resources including gdpr_jobs. Authentication is OAuth 2.0 with the
+  refresh_token grant only and no scope model; the binding runtime limit is a cap of ten
+  concurrent requests per organization rather than a request rate.
+x-successor:
+  brand: Acoustic
+  profile: all/acoustic
+  note: >-
+    Silverpop is the legacy brand of the platform Acoustic sells today. This profile
+    covers the Silverpop-branded surface — the github.com/Silverpop SDK organization and
+    the Engage/Campaign API contract that carries the Silverpop operation names. The
+    live Acoustic Campaign Swagger 1.1 service descriptions are held once, in the
+    Acoustic profile, and are deliberately not duplicated here.
 accessModel:
-  pricing: freemium
-  onboarding: self-serve
+  pricing: paid
+  onboarding: sales
   trial: false
-  try_now: true
-  public: false
-  label: Freemium · Self-serve signup
+  try_now: false
+  public: true
+  label: Public docs, sales-gated onboarding
   confidence: high
   source:
-  - plans
-  - authentication
-  generated: '2026-07-22'
-  method: derived
+  - https://www.acoustic.com/pricing
+  - https://developer.goacoustic.com/acoustic-campaign/reference/api-developers-guide-and-legal-information
+  generated: '2026-08-13'
+  method: searched
+  note: >-
+    Corrects a 2026-07-22 derivation that read "freemium / self-serve" off a scaffolded
+    plans file. The provider publishes three packages (Professional, Premium, Ultimate),
+    no prices, no free tier and no self-serve signup — every tier's call to action is "Get
+    a demo" — and the API developer's guide states that use of the XML API is "strictly
+    prohibited unless you have a valid, unexpired Agreement in place." Documentation is
+    fully public and requires no login.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/silverpop.png
 url: https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/apis.yml
 created: '2026-05-02'
-modified: '2026-05-02'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 tags:
   - Email Marketing
   - Marketing Automation
   - Campaign Management
   - Digital Marketing
+  - Transactional Email
+  - SMS
+  - Customer Data
+  - Contact Management
+  - Mobile Push
+  - Marketing Analytics
 apis:
 - aid: silverpop:silverpop-authentication-api
   name: Silverpop Authentication API
@@ -167,11 +202,99 @@ common:
     url: https://developer.goacoustic.com/acoustic-campaign/reference/overview
   - type: Authentication
     url: https://developer.goacoustic.com/acoustic-campaign/docs/authentication
+  - type: APIReference
+    url: https://developer.goacoustic.com/acoustic-campaign/reference/overview
+  - type: GettingStarted
+    url: https://developer.goacoustic.com/acoustic-campaign/reference/getting-started-with-oauth
+  - type: Postman
+    url: https://documenter.getpostman.com/view/1643559/2sBXqQEHNz
+  - type: StatusPage
+    url: https://status.goacoustic.com
+  - type: Pricing
+    url: https://www.acoustic.com/pricing
+  - type: Blog
+    url: https://www.acoustic.com/resources/blog
+  - type: Support
+    url: https://help.goacoustic.com
+  - type: SignUp
+    url: https://www.acoustic.com/demo
+  - type: Login
+    url: https://login.goacoustic.com
   - type: TermsOfService
-    url: https://www.goacoustic.com/terms-of-use
+    url: https://www.acoustic.com/terms-conditions
   - type: PrivacyPolicy
-    url: https://www.goacoustic.com/privacy-notice
+    url: https://www.acoustic.com/privacy-notice
+  - type: Packages
+    url: packages/silverpop-packages.yml
+  - type: SDKs
+    url: packages/silverpop-packages.yml
+  - type: WellKnown
+    url: well-known/silverpop-well-known.yml
+  - type: APICatalog
+    url: well-known/silverpop-api-catalog.json
+  - type: MCPServer
+    url: mcp/silverpop-mcp.yml
+  - type: LLMsTxt
+    url: llms/silverpop-llms.txt
+  - type: Conformance
+    url: conformance/silverpop-conformance.yml
+  - type: Compliance
+    url: conformance/silverpop-conformance.yml
+  - type: ErrorCatalog
+    url: errors/silverpop-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/silverpop-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/silverpop-lifecycle.yml
+  - type: Conventions
+    url: conventions/silverpop-conventions.yml
+  - type: Plans
+    url: plans/silverpop-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/silverpop-rate-limits.yml
+  - type: FinOps
+    url: finops/silverpop-finops.yml
 maintainers:
   - FN: API Evangelist
     url: https://apievangelist.com
     email: info@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 9
+  pass: local-v1
+  note: >-
+    Contract discovery ran to the end of STEP 0b and the honest answer is that this
+    provider publishes no OpenAPI. developer.goacoustic.com is a ReadMe SuperHub whose
+    catch-all answers HTTP 200 with the same 740,863-byte HTML shell for /openapi.json,
+    /swagger.json, /api-docs, /redoc and every /.well-known/* path — the classic soft-200.
+    Its server-rendered state does list four uploaded API definitions (events-2, events-5,
+    events-6, events-7.json) but exposes no public download route, and api.readme.com/v2
+    401s without a key. Exactly one real document is served from a well-known path: an
+    RFC 9727 api-catalog (application/linkset+json) with six anchors, saved verbatim. The
+    only machine-readable service description that exists is Swagger 1.1, served live off
+    the API host itself at /restdoc/<resource> — verified 200 at
+    api-campaign-us-1.goacoustic.com/restdoc/messages. Those Swagger documents were
+    harvested into the sibling Acoustic profile on the same day and are NOT duplicated
+    here.
+
+    Two corrections were more valuable than the additions. The plans and rate-limits files
+    were 2026-05-04 bulk-sweep scaffolds asserting a free tier with a monthly request
+    quota and a full X-RateLimit-* header set; the provider publishes none of that. Real
+    pricing is three unpriced sales-gated packages, and the real limit is a concurrency
+    cap of 10 in-flight requests per organization with no rate-limit headers anywhere on
+    the API. The accessModel block, which had been derived from that scaffold as
+    "freemium / self-serve", was corrected to paid / sales.
+
+    Package currency is the sharpest signal in this profile: the first-party Node client
+    on npm (watson-campaign-automation-api, named for the IBM era) last shipped 0.1.9 on
+    2019-11-19, the Java client was never published to Maven Central at all, and only the
+    mobile SDK still moves — AcousticMobilePush 3.10.6 on CocoaPods, 2026-02-17.
+
+    Not written, deliberately: no a2a/ (the agent-card 200s are the SPA shell), no
+    changelog/ (the docs project has its changelog module disabled), no scopes/ (the OAuth
+    model has none — a refresh token inherits the bound user's full permissions), no
+    skills/ and no overlays/ (the six files in openapi/ are pipeline scaffolds, not
+    provider-published, and their operationIds are invented — grounding skills in them
+    would teach an agent to call paths like /rest/mailings that the live Swagger shows as
+    /rest/messages).

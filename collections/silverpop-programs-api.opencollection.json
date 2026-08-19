@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Programs API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Programs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Programs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/programs"
+          },
+          "docs": "Retrieve all marketing automation programs in the account."
+        },
+        {
+          "info": {
+            "name": "Get Program",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/programs/:program_id",
+            "params": [
+              {
+                "name": "program_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details and status of a specific marketing automation program."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

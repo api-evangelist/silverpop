@@ -1,0 +1,145 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: >-
+  Derived from the operations the provider documents at
+  https://developer.goacoustic.com/acoustic-campaign/reference/overview after searching
+  for a first-party MCP server and finding none.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+search_evidence:
+- url: https://developer.goacoustic.com/acoustic-campaign/mcp
+  status: 404
+  note: No MCP endpoint on the docs host.
+- url: https://registry.npmjs.org/acoustic-campaign
+  status: 404
+- url: https://developer.goacoustic.com/.well-known/api-catalog
+  status: 200
+  note: >-
+    The RFC 9727 catalog advertises six Acoustic API products; not one of the six anchors
+    points at an MCP endpoint.
+- url: https://developer.goacoustic.com/llms.txt
+  status: 404
+  note: No llms.txt to fall back to for a tool list.
+note: >-
+  Nobody ships an MCP server for this API — not the provider, not the community. mode is
+  `none` and endpoint/install are deliberately empty; no URL was guessed. The tools below
+  are a CANDIDATE surface derived from operations the provider documents by name in its
+  own reference, so the names are real even though no server exposes them.
+
+  Two things would make a server here awkward and are worth recording before anyone builds
+  one. First, there is no base URL — the host embeds a per-tenant region and pod
+  (api-campaign-{region}-{pod}.goacoustic.com), so the server's endpoint is configuration,
+  not a constant. Second, there is no scope model: a refresh token inherits the full
+  Campaign permissions of the human it is bound to, so an agent handed one can do anything
+  that user can do in the UI, including PurgeData and RemoveRecipient. Any real server
+  should gate the destructive tools explicitly — see agentic-access/silverpop-agentic-access.yml.
+candidate_tools:
+- name: add_contact
+  operation: AddRecipient
+  surface: xml-api
+  consequence: write
+  description: Add one new contact to an existing contact database.
+- name: update_contact
+  operation: UpdateRecipient
+  surface: xml-api
+  consequence: write
+- name: get_contact
+  operation: SelectRecipientData
+  surface: xml-api
+  consequence: read
+- name: remove_contact
+  operation: RemoveRecipient
+  surface: xml-api
+  consequence: destructive
+- name: opt_out_contact
+  operation: OptOutRecipient
+  surface: xml-api
+  consequence: write
+- name: double_opt_in_contact
+  operation: DoubleOptInRecipient
+  surface: xml-api
+  consequence: write
+- name: list_databases
+  operation: GetLists
+  surface: xml-api
+  consequence: read
+- name: get_database_details
+  operation: GetListMetaData
+  surface: xml-api
+  consequence: read
+- name: import_to_database
+  operation: ImportList
+  surface: xml-api
+  consequence: write
+- name: export_from_database
+  operation: ExportList
+  surface: xml-api
+  consequence: read
+  note: Asynchronous — returns a job id; poll GetJobStatus.
+- name: purge_data
+  operation: PurgeData
+  surface: xml-api
+  consequence: destructive
+  note: GDPR erasure. Should require human-in-the-loop.
+- name: create_contact_list
+  operation: CreateContactList
+  surface: xml-api
+  consequence: write
+- name: add_contact_to_program
+  operation: AddContactToProgram
+  surface: xml-api
+  consequence: write
+- name: list_programs
+  operation: GetPrograms
+  surface: xml-api
+  consequence: read
+- name: schedule_mailing
+  operation: ScheduleMailing
+  surface: xml-api
+  consequence: destructive
+  note: Sends email to real people. Should require human-in-the-loop.
+- name: send_mailing
+  operation: SendMailing
+  surface: xml-api
+  consequence: destructive
+  note: Sends email to a contact. Should require human-in-the-loop.
+- name: preview_mailing
+  operation: PreviewMailing
+  surface: xml-api
+  consequence: read
+- name: list_mailing_templates
+  operation: GetMailingTemplates
+  surface: xml-api
+  consequence: read
+- name: get_mailing_metrics
+  operation: GetAggregateTrackingForMailing
+  surface: xml-api
+  consequence: read
+- name: get_org_metrics
+  operation: GetAggregateTrackingForOrg
+  surface: xml-api
+  consequence: read
+- name: export_raw_events
+  operation: RawRecipientDataExport
+  surface: xml-api
+  consequence: read
+  note: Asynchronous export job.
+- name: get_job_status
+  operation: GetJobStatus
+  surface: xml-api
+  consequence: read
+- name: send_transactional_sms
+  operation: Send transactional SMS messages (REST)
+  surface: rest-api
+  consequence: destructive
+- name: get_published_messages
+  operation: Get published messages (REST)
+  surface: rest-api
+  consequence: read
+tool_count: 24

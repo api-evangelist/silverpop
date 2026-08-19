@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Transactional API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactional",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Transactional Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/transact/xmlapi"
+          },
+          "docs": "Send a transactional email or SMS message to a single recipient using an XML API call."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

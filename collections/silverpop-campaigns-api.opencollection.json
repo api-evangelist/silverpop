@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Campaigns API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Campaigns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by campaign status"
+              }
+            ]
+          },
+          "docs": "Retrieve all email campaigns (mailings) in the account."
+        },
+        {
+          "info": {
+            "name": "Create Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new email campaign mailing."
+        },
+        {
+          "info": {
+            "name": "Get Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings/:mailing_id",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific email campaign."
+        },
+        {
+          "info": {
+            "name": "Schedule Campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/mailings/:mailing_id/schedule",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedule a campaign mailing for delivery at a specific date and time."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

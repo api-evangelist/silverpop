@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Reports API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Campaign Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/reports/mailings/:mailing_id/summary",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve aggregate performance metrics for a sent campaign."
+        },
+        {
+          "info": {
+            "name": "Get Campaign Opens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/reports/mailings/:mailing_id/opens",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve detailed open event data for a sent campaign."
+        },
+        {
+          "info": {
+            "name": "Get Campaign Clicks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/reports/mailings/:mailing_id/clicks",
+            "params": [
+              {
+                "name": "mailing_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve detailed click-through event data for a sent campaign."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

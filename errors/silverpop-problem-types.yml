@@ -1,0 +1,310 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.goacoustic.com/acoustic-campaign/reference/error-codes and
+  https://developer.goacoustic.com/acoustic-campaign/reference/rest-api-response-codes
+docs:
+- https://developer.goacoustic.com/acoustic-campaign/reference/error-codes
+- https://developer.goacoustic.com/acoustic-campaign/reference/rest-api-response-codes
+format: legacy-xml-fault
+rfc9457: false
+note: >-
+  This API predates problem+json by more than a decade and it shows. There are two
+  entirely separate error surfaces and they do not share a shape.
+
+  (1) The XML API returns a SOAP-ish fault envelope. The provider publishes 116 numbered
+  error codes; the human-readable detail arrives in the `Fault String` element, and the
+  number in `errorid`. The numbering is not a namespace — it is three eras stacked on top
+  of each other: 1-6 are the forward-to-friend (FTF_*) symbolic constants, 50-52 are
+  request-level transport failures, 100-1018 are the operational catalogue, and several
+  numbers are documented with a bare symbolic constant (ERR_INVALID_ALLOW_HTML) rather
+  than a sentence.
+
+  (2) The REST API returns ordinary HTTP status codes with a general-errors /
+  field-errors split: 400 for a malformed request, 404 for an unknown database or
+  contact, 422 for per-column validation failures, 500 for internal faults — including,
+  notably, a 500 when an email address is on the system blocked list, which is a business
+  outcome surfaced as a server error.
+
+  Neither surface emits application/problem+json, neither carries a stable machine-
+  readable `type` URI, and there is no 429. Codes below are transcribed verbatim from the
+  provider's published tables — descriptions are the provider's own wording, including
+  where that wording is only a constant name.
+envelope:
+  xml_api:
+    error_id_field: errorid
+    message_field: Fault String
+    success_field: SUCCESS
+  rest_api:
+    style: http-status
+    levels:
+    - general errors
+    - field errors
+    note: >-
+      Field errors are returned per column in the form "{columnName}: {message}" and can
+      be raised for ANY column on the record, not only the columns named in the request.
+counts:
+  xml_error_codes: 116
+  rest_status_codes_documented: 5
+rest_status_codes:
+- status: 200
+  meaning: Success.
+- status: 400
+  level: general errors
+  meaning: Bad request — malformed or missing required input (for example a lookup key not supplied, or a value that is not a valid email).
+- status: 404
+  level: general errors
+  meaning: Database not found, or no contact found, for an invalid {databaseId} or {contactId}.
+- status: 422
+  level: general errors + field errors
+  meaning: >-
+    Unprocessable entity. The general-errors form covers column not found, lookup key not
+    found and channel not found; the field-errors form covers per-column type validation
+    — boolean must be Yes or No, date must be yyyy-MM-dd, time must be HH:mm:ss or HH:mm,
+    timestamp must be yyyy-MM-ddTHH:mm:ss.SSSZ, text must be under 4000 characters, STO
+    must be an integer 0-168, and multi-select values must be semicolon delimited.
+- status: 500
+  level: general errors
+  meaning: >-
+    Internal server error. Also returned when a database ID is not accessible to the
+    calling user, and when the submitted email is on the system blocked list — a policy
+    decision returned as a 5xx.
+rate_limit_errors:
+  documented: false
+  note: >-
+    No 429 and no Retry-After appear anywhere in the response-code reference. Concurrency
+    rejection above 10 in-flight requests per organization is described in prose without a
+    status code. See rate-limits/silverpop-rate-limits.yml.
+xml_error_codes:
+- code: 1
+  description: "FTF_NON_NUMERIC_MAILING_KEY"
+- code: 2
+  description: "FTF_NON_NUMERIC_SENDER_KEY"
+- code: 3
+  description: "FTF_BAD_MAILING"
+- code: 4
+  description: "FTF_INVALID_EMAIL_ADDRESS"
+- code: 5
+  description: "FTF_INVALID_ENCRYPTED_SENDER_KEY"
+- code: 6
+  description: "FTF_INVALID_COMMENT_SIZE"
+- code: 50
+  description: "Server Error (typically returned if the API is called incorrectly such as no XML passed in the request)"
+- code: 51
+  description: "Invalid XML request"
+- code: 52
+  description: "Missing XML parameter"
+- code: 100
+  description: "Parameter \"x\" was not provided in the API call"
+- code: 101
+  description: "Name already in use, cannot rename the template directory."
+- code: 102
+  description: "Directory already exists."
+- code: 103
+  description: "Parent directory does not exist."
+- code: 104
+  description: "Visibility is not valid."
+- code: 105
+  description: "The list type is not valid."
+- code: 106
+  description: "List ID is not valid."
+- code: 107
+  description: "Mailing ID is not valid."
+- code: 108
+  description: "Tracking Level is not valid."
+- code: 109
+  description: "Error saving mailing to the database."
+- code: 110
+  description: "Retain flag is not valid."
+- code: 111
+  description: "The mailing type is not valid."
+- code: 112
+  description: "Click Through Type is not valid."
+- code: 113
+  description: "TextSize is not an integer."
+- code: 114
+  description: "Parameter \"x\" was not provided in the API call."
+- code: 115
+  description: "Name already in use, cannot rename template directory."
+- code: 116
+  description: "ERR_INVALID_CREATED_FROM"
+- code: 117
+  description: "ERR_INVALID_ALLOW_HTML"
+- code: 118
+  description: "ERR_INVALID_SEND_AUTOREPLY"
+- code: 119
+  description: "ERR_INVALID_UPDATE_IF_FOUND"
+- code: 120
+  description: "Error saving recipient to the database."
+- code: 121
+  description: "Unable to add a recipient. No EMAIL provided."
+- code: 122
+  description: "Unable to add a recipient. The recipient already exists."
+- code: 123
+  description: "Unable to update recipient. The recipient does not exist."
+- code: 124
+  description: "The recipient ID is not valid."
+- code: 125
+  description: "No List ID or Mailing ID provided with the Recipient ID."
+- code: 126
+  description: "Mailing does not exist."
+- code: 127
+  description: "Mailing deleted."
+- code: 128
+  description: "The recipient is not a member of the list."
+- code: 129
+  description: "The recipient has opted out of the list."
+- code: 130
+  description: "Unable to send mailing; internal error."
+- code: 131
+  description: "ERR_INVALID_IMPORT_TYPE"
+- code: 132
+  description: "Unable to create the import job."
+- code: 133
+  description: "The file type is not valid."
+- code: 134
+  description: "The file type is not valid."
+- code: 135
+  description: "The job ID is not valid."
+- code: 136
+  description: "Unable to create Delete job. Internal error."
+- code: 137
+  description: "Unable to destroy mailing. Internal error."
+- code: 138
+  description: "Unable to remove the recipient from the list. Internal error."
+- code: 139
+  description: "Unable to create DC ruleset export job."
+- code: 140
+  description: "Editor type is not valid."
+- code: 141
+  description: "Encoding is not valid."
+- code: 143
+  description: "The list is a query, cannot delete the list query recipients."
+- code: 145
+  description: "The session has expired or is invalid."
+- code: 146
+  description: "Invalid default value for the List Column type."
+- code: 147
+  description: "Include All Lists is not valid."
+- code: 150
+  description: "Organization permissions prohibit using this API."
+- code: 151
+  description: "ERR_LIST_META_DENIED"
+- code: 152
+  description: "Unable to create set column values job. Internal error."
+- code: 153
+  description: "ERR_EXPORT_NOT_LIST_COLUMN"
+- code: 154
+  description: "The action code is not valid."
+- code: 155
+  description: "Ruleset \"x\" does not exist."
+- code: 156
+  description: "Unable to create the export job. Internal error."
+- code: 160
+  description: "Can only send custom automated mailings. Provide the Mailing ID for a Custom AutomatedMailing."
+- code: 161
+  description: "COLUMN_NAME is not valid for this list."
+- code: 162
+  description: "Mailing is not active."
+- code: 170
+  description: "SQLException deleting ruleset."
+- code: 171
+  description: "Error deleting rule."
+- code: 172
+  description: "Usage was not an integer."
+- code: 173
+  description: "SQLException listing Dynamic Content ruleset."
+- code: 174
+  description: "SQLException listing Dynamic Content rulesets for list."
+- code: 180
+  description: "Unable to check if user exists. Internal error."
+- code: 181
+  description: "You cannot schedule Multimatch Mailings through the API."
+- code: 182
+  description: "A Mailing with the provided name already exists."
+- code: 183
+  description: "Errors found validating mailing."
+- code: 184
+  description: "Numerous errors related to dates."
+- code: 185
+  description: "Report ID for Behaviour is invalid."
+- code: 186
+  description: "ERR_INVALID_SENT_MAILING_TYPE"
+- code: 187
+  description: "The RECURSIVE flag is not valid."
+- code: 188
+  description: "Cannot use a System field name for a List column."
+- code: 190
+  description: "Unable to locate the element in the definition. Unable to continue."
+- code: 211
+  description: "Unable to complete the request. Required unique key column values were not provided."
+- code: 256
+  description: "Unable to create a query. The new List name already exists."
+- code: 300
+  description: "A ruleset with the provided name already exists."
+- code: 301
+  description: "A ruleset with the provided name does not exist."
+- code: 310
+  description: "Invalid value for element LIST_ID. Not an integer. Value:\"x\""
+- code: 311
+  description: "Unable to create recipient data job. Internal error."
+- code: 312
+  description: "List is not the right type for this API."
+- code: 313
+  description: "Column is not the right type for this API."
+- code: 314
+  description: "Column \"x\" is not found in the list."
+- code: 315
+  description: "Unable to opt-out recipient from the list. Internal error."
+- code: 316
+  description: "Invalid XML in request. COLUMN element found without a NAME."
+- code: 320
+  description: "Both MAILING_ID and LIST_ID are provided. Provide only one."
+- code: 321
+  description: "The export format is not valid."
+- code: 322
+  description: "Mailing content archived."
+- code: 323
+  description: "Specified folder ID must be a number."
+- code: 324
+  description: "Visibility of the list and parent folder must match."
+- code: 325
+  description: "Specified folder ID does not exist."
+- code: 326
+  description: "Unable to update recipient's EMAIL. EMAIL is part of the UniqueIdentifier."
+- code: 329
+  description: "SYNC_FiELD element found without a NAME."
+- code: 500
+  description: "Detailed report data for this mailing is not available this time. Try again later."
+- code: 600
+  description: "Error saving query to the database."
+- code: 806
+  description: "Autoresponder is not active."
+- code: 1001
+  description: "Recipient ID not found in the list."
+- code: 1002
+  description: "Sync ID not found in the list."
+- code: 1003
+  description: "Error saving the recipient."
+- code: 1004
+  description: "Error retrieving the recipient."
+- code: 1005
+  description: "Error adding the recipient."
+- code: 1006
+  description: "Missing recipient key info."
+- code: 1007
+  description: "The column does not exist in the list."
+- code: 1008
+  description: "Recipient not found in the list."
+- code: 1009
+  description: "The recipient already deleted in Engage."
+- code: 1011
+  description: "Cannot update system column."
+- code: 1015
+  description: "Error merging recipient."
+- code: 1016
+  description: "Missing required column value."
+- code: 1017
+  description: "The email address is invalid."
+- code: 1018
+  description: "Error adding the contact. The contact already exists in the contact list."

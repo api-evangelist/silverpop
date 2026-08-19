@@ -1,0 +1,140 @@
+# Silverpop (Acoustic Campaign)
+
+> Silverpop Engage is the email marketing, marketing automation and transactional
+> messaging API now sold as Acoustic Campaign. It is one of the longest-lived commercial
+> marketing APIs still in production: the operation names an integrator calls today —
+> AddRecipient, ScheduleMailing, RawRecipientDataExport — are the original Silverpop
+> names, unchanged through acquisition by IBM (2014, as Watson Campaign Automation) and
+> the carve-out to Acoustic (2019). silverpop.com now 301s to acoustic.com.
+
+GENERATED, NOT PUBLISHED. This file was written by API Evangelist from this repository's
+artifacts. The provider serves no llms.txt: https://developer.goacoustic.com/llms.txt and
+https://developer.goacoustic.com/acoustic-campaign/llms.txt both return 404 (probed
+2026-08-13). Do not cite it as a provider-published document.
+
+Generated: 2026-08-13
+Method: generated
+Source: apis.yml + repository artifacts
+
+## What an agent needs to know first
+
+- **There is no single base URL.** The host embeds a region and a pod number, one per
+  tenant: `https://api-campaign-{region}-{pod}.goacoustic.com` — us-1, us-5, eu-1 and so
+  on. The value comes from the Campaign UI's Org Admin section. There is no discovery
+  endpoint. Hardcoding us-1 addresses the wrong tenant estate.
+- **There are two APIs behind that host.** `/XMLAPI` is a single POST endpoint where the
+  operation is the root XML element (about 60 documented operations). `/rest` is a later,
+  narrower JSON surface (11 resources). They share auth and nothing else — different
+  payloads, different error shapes.
+- **The binding limit is concurrency, not rate.** 10 concurrent authenticated requests per
+  ORGANIZATION. The 11th is rejected outright, not queued. No rate-limit response headers
+  exist on the API; do not look for `X-RateLimit-*`.
+- **There is no scope model.** A refresh token inherits the full Campaign permissions of
+  the human user it is bound to. An agent holding one can call PurgeData and
+  ScheduleMailing — erase data and send email to real people.
+- **There is no OpenAPI.** The only machine-readable service description is Swagger 1.1,
+  served live from the API host at `/restdoc/<resource>`.
+
+## Authentication
+
+OAuth 2.0, refresh_token grant only.
+
+- `POST https://api-campaign-{region}-{pod}.goacoustic.com/oauth/token`
+- Body: `grant_type=refresh_token`, `client_id`, `client_secret`, `refresh_token`
+- Returns an `access_token` with `expires_in` of 4 hours. Present it as
+  `Authorization: Bearer <access_token>`.
+- `client_id`/`client_secret` are minted per APPLICATION in Organization Settings →
+  Application Account Access. The `refresh_token` is minted per (application, user) pair
+  and is EMAILED to the requesting user and the principal org admin — it never comes back
+  from an API call.
+- Refresh tokens do not expire; they are revoked from the UI.
+- Reuse the access token across calls. The provider recommends minting a new one every 3
+  hours, inside the 4-hour window.
+- Legacy JSESSIONID session auth still works but is deprecated in prose, capped at 20
+  active sessions per org, and has no retirement date.
+
+Docs: https://developer.goacoustic.com/acoustic-campaign/reference/getting-started-with-oauth
+
+## Errors
+
+Two catalogues, no problem+json.
+
+- XML API: fault envelope carrying a numeric `errorid` and a human `Fault String`. 116
+  documented codes. Notable: 50 server error / bad request, 51 invalid XML, 52 missing XML
+  parameter, 121 no EMAIL provided, 122 recipient already exists, 123 recipient does not
+  exist.
+- REST API: HTTP status with a general-errors / field-errors split. 400 malformed, 404
+  unknown database or contact, 422 per-column validation, 500 internal — including a 500
+  when the submitted email is on the system blocked list, which is a policy outcome
+  returned as a server error.
+- No 429 and no Retry-After anywhere in the reference.
+
+Full catalogue: errors/silverpop-problem-types.yml
+Docs: https://developer.goacoustic.com/acoustic-campaign/reference/error-codes
+
+## Retries and bulk reads
+
+- No idempotency key. A retried create is distinguishable from a first create only by
+  reading error 122 back off the fault envelope.
+- Bulk retrieval is asynchronous, not paginated. ExportList, ExportTable,
+  RawRecipientDataExport and WebTrackingDataExport return a job id; poll GetJobStatus,
+  then DeleteJob. There is no cursor or offset convention.
+
+## Operation surface (XML API, by group)
+
+- Database management: AddRecipient, UpdateRecipient, SelectRecipientData,
+  RemoveRecipient, OptOutRecipient, DoubleOptInRecipient, SetColumnValue, GetLists,
+  GetListMetaData, ImportList, ExportList, CreateQuery, CalculateQuery, PurgeData
+- Contact lists: CreateContactList, AddContactToContactList, AddContactToProgram,
+  GetContactMailingDetails
+- Relational tables: CreateTable, ImportTable, ExportTable, PurgeTable, JoinTable,
+  InsertUpdateRelationalTable, DeleteRelationalTableData, DeleteTable
+- Templates and mailings: GetMailingTemplates, ScheduleMailing, SendMailing,
+  ForwardToFriend, PreviewMailing, ExportMailingTemplate, SaveMailing,
+  GetMessageGroupDetails
+- Dynamic content: AddDCRuleset, DeleteDCRuleset, ExportDCRuleset, GetDCRuleset,
+  ImportDCRuleset, ListDCRulesetsForMailing, ReplaceDCRuleset, ValidateDCRuleset
+- Scoring models: GetContactScores, GetScoringModels
+- Automation: GetPrograms, GetProgramsByContact
+- Reporting: ListRecipientMailings, GetReportIdByDate, GetSentMailingsForOrg,
+  GetSentMailingsForUser, GetSentMailingsForList, GetAggregateTrackingForUser,
+  GetAggregateTrackingForOrg, GetAggregateTrackingForMailing, RawRecipientDataExport,
+  WebTrackingDataExport
+- Jobs and misc: GetJobStatus, DeleteJob, GetFolderPath
+
+## REST resources
+
+/rest/databases, /rest/messages, /rest/events, /rest/eventtypes, /rest/programs,
+/rest/relationaltables, /rest/webtracking, /rest/channels, /rest/contactsources,
+/rest/orgs, /rest/gdpr_jobs
+
+## Client libraries
+
+- npm `watson-campaign-automation-api` 0.1.9 — published 2019-11-19. First party, from
+  github.com/Silverpop/node-engage. Nearly seven years without a release.
+- CocoaPods `AcousticMobilePush` 3.10.6 — published 2026-02-17. First party. The only
+  moving library in the estate.
+- `com.silverpop:spapi-client` 1.2.6 — Java, source only, never on Maven Central. Last
+  commit 2021-07-14.
+- Public Postman collection: https://documenter.getpostman.com/view/1643559/2sBXqQEHNz
+
+## Not available
+
+- No OpenAPI. No AsyncAPI. No GraphQL.
+- No MCP server, hosted or stdio.
+- No A2A agent card (`/.well-known/agent-card.json` and `/.well-known/agent.json` both
+  return the docs SPA shell, not a document).
+- No security.txt, no OpenID configuration, no OAuth authorization-server metadata.
+- No changelog feed (the docs project has its changelog module disabled).
+- No published prices — three packages (Professional, Premium, Ultimate), all "Get a demo".
+
+## Links
+
+- Developer portal: https://developer.goacoustic.com
+- API reference: https://developer.goacoustic.com/acoustic-campaign/reference/overview
+- API limits: https://developer.goacoustic.com/acoustic-campaign/reference/basics
+- Status: https://status.goacoustic.com (Statuspage; tracks "API" as a component;
+  JSON at https://status.goacoustic.com/api/v2/summary.json)
+- api-catalog (RFC 9727): https://developer.goacoustic.com/.well-known/api-catalog
+- GitHub: https://github.com/Silverpop
+- Company: https://www.acoustic.com

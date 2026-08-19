@@ -1,0 +1,150 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.goacoustic.com/acoustic-campaign/reference/rest-api-overview,
+  https://developer.goacoustic.com/acoustic-campaign/reference/basics,
+  https://developer.goacoustic.com/acoustic-campaign/reference/getting-started-with-oauth,
+  https://developer.goacoustic.com/acoustic-campaign/reference/postman-collection,
+  live Swagger 1.1 service description at https://api-campaign-us-1.goacoustic.com/restdoc/<resource>
+description: >-
+  Cross-cutting runtime semantics for the Silverpop Engage / Acoustic Campaign API. The
+  headline for anyone wiring an agent to this: there are TWO APIs behind one host, they
+  share an auth scheme and nothing else, and the addressable host is per-tenant.
+surfaces:
+- id: xml-api
+  path: /XMLAPI
+  content_type: text/xml
+  description: >-
+    The original Silverpop API. A single POST endpoint; the operation is the root element
+    of the XML body (AddRecipient, ScheduleMailing, ExportList, RawRecipientDataExport…).
+    Errors come back as a fault envelope with a numeric errorid. This is where most of the
+    operation surface still lives — roughly 60 documented operations across database
+    management, contact lists, relational tables, scoring models, templates and mailings,
+    dynamic content, and reporting.
+- id: rest-api
+  base_path: /rest
+  content_type: application/json
+  description: >-
+    A later, narrower JSON surface over the same platform. Resource-oriented:
+    /rest/databases, /rest/messages, /rest/events, /rest/eventtypes, /rest/programs,
+    /rest/relationaltables, /rest/webtracking, /rest/channels, /rest/contactsources,
+    /rest/orgs, /rest/gdpr_jobs. Errors are HTTP status codes with a general-errors /
+    field-errors split.
+  service_description: >-
+    A live Swagger 1.1 resource listing is served from the API host itself at
+    /restdoc/<resource> (for example
+    https://api-campaign-us-1.goacoustic.com/restdoc/messages, HTTP 200, declaring
+    basePath https://api-campaign-us-1.goacoustic.com/rest). Swagger 1.1 predates OpenAPI
+    2.0 by several years; it is a real machine-readable description but no modern tool
+    consumes it without conversion.
+addressing:
+  style: per-tenant-host
+  pattern: https://api-campaign-{region}-{pod}.goacoustic.com
+  examples:
+  - https://api-campaign-us-1.goacoustic.com
+  - https://api-campaign-us-5.goacoustic.com
+  - https://api-campaign-eu-1.goacoustic.com
+  note: >-
+    The region and pod number are part of the HOSTNAME, not a path segment or a header.
+    Every organization is pinned to one. The provider's own instruction: "Remember to use
+    your specific pod number and data center before submitting a request." There is no
+    discovery endpoint that resolves an org to its pod — the value comes from the
+    Campaign UI's Org Admin section. Treat the base URL as tenant configuration, never as
+    a constant.
+authentication:
+  style: oauth2-refresh-token-grant
+  header: 'Authorization: Bearer <access_token>'
+  token_endpoint: /oauth/token
+  grant: refresh_token
+  credentials:
+  - client_id
+  - client_secret
+  - refresh_token
+  access_token_ttl: 4 hours
+  refresh_token_ttl: >-
+    Does not expire unless the user's access is revoked from Organization Settings for
+    that application.
+  provisioning: >-
+    client_id and client_secret are minted per APPLICATION in Organization Settings ->
+    Application Account Access -> Add Application. The refresh_token is minted per
+    (application, user) pair via Add Account Access, and is emailed to the requesting user
+    and the principal org admin — it is not returned in an API response.
+  scopes: false
+  scopes_note: >-
+    There is no scope model. Authorization is inherited from the Campaign permissions of
+    the USER the refresh token is bound to, so the blast radius of a token is "whatever
+    that human can do in the UI". Revocation is per refresh token, from the UI.
+  legacy: >-
+    JSESSIONID session auth still works and is capped at 20 active sessions per org. See
+    lifecycle/silverpop-lifecycle.yml.
+  detail: authentication/silverpop-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency key, no request-deduplication header, and nothing in the reference that
+    describes safe retry of a write. This matters more here than usual: the XML API's
+    AddRecipient returns error 122 ("Unable to add a recipient. The recipient already
+    exists.") on a duplicate, which means a retried create is distinguishable from a first
+    create only by inspecting the error number. Retry logic has to be written against the
+    error catalog, not against a protocol guarantee. NO Idempotency pointer is emitted in
+    apis.yml — the check would be asserting something the provider does not offer.
+pagination:
+  style: undocumented
+  params: []
+  response_fields: []
+  note: >-
+    No cross-cutting pagination contract is published. Bulk retrieval is handled by an
+    asynchronous EXPORT/JOB model instead — ExportList, ExportTable,
+    RawRecipientDataExport and WebTrackingDataExport all return a job identifier, and the
+    caller polls GetJobStatus and eventually DeleteJob. That job lifecycle, not a cursor,
+    is how you read large result sets from this API.
+  job_operations:
+  - GetJobStatus
+  - DeleteJob
+  - RawRecipientDataExport
+  - WebTrackingDataExport
+  - ExportList
+  - ExportTable
+concurrency:
+  model: per-organization concurrent request cap
+  limit: 10
+  note: >-
+    The binding runtime constraint. Not a rate limit — a concurrency limit, org-wide,
+    enforced by rejection rather than queueing. See rate-limits/silverpop-rate-limits.yml.
+request_id:
+  supported: false
+  note: >-
+    No correlation or request-id header is documented on either surface, so there is no
+    published token to quote back to support when a call fails. The provider does note
+    that API logs are available for troubleshooting — but only for calls made from a
+    controlled service, which is one of its stated reasons not to embed credentials in a
+    mobile app.
+errors:
+  envelope_xml: Fault String + errorid
+  envelope_rest: HTTP status + general-errors / field-errors
+  rfc9457: false
+  detail: errors/silverpop-problem-types.yml
+rate_limit_signaling:
+  headers: none
+  status_on_exhaustion: undocumented
+  detail: rate-limits/silverpop-rate-limits.yml
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+  note: >-
+    No generic metadata bag. Arbitrary per-contact data is modelled as typed COLUMNS on a
+    contact database, with server-side validation per column type (boolean must be Yes/No,
+    date yyyy-MM-dd, time HH:mm:ss, timestamp yyyy-MM-ddTHH:mm:ss.SSSZ, text under 4000
+    chars, STO an integer 0-168). Sending an unknown column is a 422, not a silent ignore.
+versioning:
+  scheme: none
+  detail: lifecycle/silverpop-lifecycle.yml
+collections:
+  postman: https://documenter.getpostman.com/view/1643559/2sBXqQEHNz
+  note: >-
+    The provider publishes and maintains a public Postman collection for the XML API,
+    including an OAuth 2.0 "Generate an Access Token" request and a documented
+    post-response script that stores access_token as an environment variable. Docs page
+    last updated 2026-06-12 — the most recently touched page in the whole reference.

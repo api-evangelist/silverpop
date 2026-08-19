@@ -1,0 +1,438 @@
+{
+  "item": [
+    {
+      "id": "52945108-7c10-446a-bede-9723b34c2f21",
+      "name": "Reports",
+      "description": {
+        "content": "Campaign reporting and analytics",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7102e3dc-ec57-476a-bd91-24c2d4850bcb",
+          "name": "Get Campaign Summary",
+          "request": {
+            "name": "Get Campaign Summary",
+            "description": {
+              "content": "Retrieve aggregate performance metrics for a sent campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "reports",
+                "mailings",
+                ":mailing_id",
+                "summary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mailing_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b014f276-0398-4d19-a99e-277f139bd5b6",
+              "name": "Campaign summary metrics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "reports",
+                    "mailings",
+                    ":mailing_id",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mailing_id\": \"string\",\n  \"name\": \"string\",\n  \"sent_count\": 5542,\n  \"delivered_count\": 4233,\n  \"open_count\": 5368,\n  \"unique_open_count\": 2028,\n  \"click_count\": 7751,\n  \"unique_click_count\": 9045,\n  \"unsubscribe_count\": 5124,\n  \"bounce_count\": 1285,\n  \"open_rate\": 7880.182843347246,\n  \"click_rate\": 5935.5100823777475\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4f5f118-1a90-42a3-9260-5a94403cc125",
+              "name": "Campaign not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "reports",
+                    "mailings",
+                    ":mailing_id",
+                    "summary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70c5ea46-d68a-4de9-a816-85910878be50",
+          "name": "Get Campaign Opens",
+          "request": {
+            "name": "Get Campaign Opens",
+            "description": {
+              "content": "Retrieve detailed open event data for a sent campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "reports",
+                "mailings",
+                ":mailing_id",
+                "opens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mailing_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b529f53d-d5ee-4e38-957f-16d7d0fde274",
+              "name": "Open event records",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "reports",
+                    "mailings",
+                    ":mailing_id",
+                    "opens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"opens\": [\n    {\n      \"contact_id\": \"string\",\n      \"email\": \"ZlRH@QQUZ.irs\",\n      \"timestamp\": \"1966-09-04T17:54:50.313Z\",\n      \"url\": \"string\",\n      \"user_agent\": \"string\",\n      \"ip_address\": \"string\"\n    },\n    {\n      \"contact_id\": \"string\",\n      \"email\": \"s629Ux@vsNqO.yjn\",\n      \"timestamp\": \"2009-01-24T12:18:04.142Z\",\n      \"url\": \"string\",\n      \"user_agent\": \"string\",\n      \"ip_address\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b7f58aa4-2aa4-4dc4-8182-ef5fe99067b9",
+          "name": "Get Campaign Clicks",
+          "request": {
+            "name": "Get Campaign Clicks",
+            "description": {
+              "content": "Retrieve detailed click-through event data for a sent campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "reports",
+                "mailings",
+                ":mailing_id",
+                "clicks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mailing_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81b7342f-998a-4726-93d6-56d8fe791875",
+              "name": "Click event records",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "reports",
+                    "mailings",
+                    ":mailing_id",
+                    "clicks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"clicks\": [\n    {\n      \"contact_id\": \"string\",\n      \"email\": \"6ymN2g-cZtuRpi4@MMhLgbafBHBzbfyeUWlKcZPeWWTFNfXmn.gh\",\n      \"timestamp\": \"2015-03-10T04:59:37.461Z\",\n      \"url\": \"string\",\n      \"user_agent\": \"string\",\n      \"ip_address\": \"string\"\n    },\n    {\n      \"contact_id\": \"string\",\n      \"email\": \"XTGueUdlfUS7r@gDqw.ijfz\",\n      \"timestamp\": \"1988-06-23T03:23:18.160Z\",\n      \"url\": \"string\",\n      \"user_agent\": \"string\",\n      \"ip_address\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api-campaign-us-1.goacoustic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4f6f050c-5e69-42f4-b242-d91333bb178f",
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.\n\nContact Support:\n Name: Acoustic Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

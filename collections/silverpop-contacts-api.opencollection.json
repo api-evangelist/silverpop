@@ -1,0 +1,162 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Contacts API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases"
+          },
+          "docs": "Retrieve all contact databases (lists) in the account."
+        },
+        {
+          "info": {
+            "name": "List Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path",
+                "description": "Contact database identifier"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset"
+              }
+            ]
+          },
+          "docs": "Retrieve contacts from a specific database with optional filtering."
+        },
+        {
+          "info": {
+            "name": "Add Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path",
+                "description": "Contact database identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new contact to a specific database."
+        },
+        {
+          "info": {
+            "name": "Get Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts/:contact_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific contact's details from a database."
+        },
+        {
+          "info": {
+            "name": "Update Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts/:contact_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing contact's attributes in a database."
+        },
+        {
+          "info": {
+            "name": "Remove Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api-campaign-us-1.goacoustic.com/rest/databases/:database_id/contacts/:contact_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove (opt-out) a contact from a database."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

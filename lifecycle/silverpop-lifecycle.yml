@@ -1,0 +1,111 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.goacoustic.com/acoustic-campaign/reference/basics,
+  https://developer.goacoustic.com/acoustic-campaign/reference/overview,
+  https://developer.goacoustic.com/acoustic-campaign/reference/legacy-authentication-method-jsessionid-user-sessions,
+  https://status.goacoustic.com/api/v2/summary.json
+description: >-
+  The Silverpop Engage API is one of the longest-lived commercial marketing APIs still in
+  production, and its lifecycle story is a brand story. The product has changed owner and
+  name three times without changing its wire contract: Silverpop Engage, then IBM Watson
+  Campaign Automation, now Acoustic Campaign. The XML API operation names an integrator
+  calls today — AddRecipient, ScheduleMailing, RawRecipientDataExport — are the original
+  Silverpop names. What moved was the hostname.
+versioning:
+  scheme: none
+  in_url: false
+  in_header: false
+  current_version: null
+  note: >-
+    Neither surface is versioned. The REST base path is /rest with no version segment;
+    the XML API posts to /XMLAPI. There is no Accept-header version negotiation and no
+    published version identifier for the API itself. The only version-shaped thing on the
+    developer portal is ReadMe's own docs version ("1.0"), which describes the
+    documentation, not the contract.
+  evidence: https://developer.goacoustic.com/acoustic-campaign/reference/rest-api-overview
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    There is no written deprecation policy, no advance-notice window, and no RFC 8594
+    Sunset/Deprecation header. There IS one concrete, in-force deprecation, documented in
+    prose: JSESSIONID session authentication. The provider files it under "Legacy
+    authentication method", caps it at 20 active sessions per organization, warns that
+    abandoned sessions block new ones, and states that "all users of the Acoustic Campaign
+    XML API are strongly encouraged to use OAuth 2.0 authentication." That is a
+    deprecation with a named successor and a migration path — but no retirement date, so
+    an integrator cannot plan against it.
+  deprecated:
+  - id: jsessionid-session-auth
+    what: Legacy JSESSIONID user-session authentication for the XML API
+    status: discouraged
+    successor: OAuth 2.0 refresh_token grant
+    announced: null
+    sunset: null
+    evidence: https://developer.goacoustic.com/acoustic-campaign/reference/legacy-authentication-method-jsessionid-user-sessions
+    migration: https://developer.goacoustic.com/acoustic-campaign/reference/getting-started-with-oauth
+status_page:
+  url: https://status.goacoustic.com
+  platform: Atlassian Statuspage
+  page_id: rx9084q34820
+  page_name: Acoustic Public Service Status
+  machine_readable: true
+  api: https://status.goacoustic.com/api/v2/summary.json
+  components_include_api: true
+  note: >-
+    A real Statuspage with a public JSON API, and it tracks "API" as a first-class
+    component alongside the Support Portal — so an agent can poll availability of the API
+    itself, not just of the marketing UI. Verified live 2026-08-13.
+sla:
+  published: false
+  note: >-
+    No public uptime or support-response SLA. The API developer's guide states usage is
+    "generally governed by the same terms and conditions as set forth in your Campaign
+    License Agreement or Acoustic Services Agreement", so the commitments live in a
+    negotiated contract, not on a public page.
+  evidence: https://developer.goacoustic.com/acoustic-campaign/reference/api-developers-guide-and-legal-information
+changelog:
+  published: false
+  note: >-
+    The Acoustic Campaign ReadMe project has its changelog module disabled (the project
+    metadata served with every page carries "changelog": false), so there is no dated
+    release feed for this API. The reference pages carry per-page updatedAt timestamps —
+    most recently 2026-04-08, with the Postman collection page updated 2026-06-12 — which
+    is the only public change signal available. No changelog/ artifact was written rather
+    than assert a feed that does not exist.
+brand_lineage:
+- year: 1999
+  event: Silverpop founded; Engage is the email marketing platform and the API takes its shape.
+- year: 2014
+  event: IBM acquires Silverpop. The product becomes IBM Watson Campaign Automation; the npm SDK is published as watson-campaign-automation-api.
+- year: 2019
+  event: >-
+    IBM's marketing platforms are carved out as Acoustic. The GitHub organization stays at
+    github.com/Silverpop to this day.
+- year: 2020
+  month: 4
+  event: >-
+    Domain migration announced on the developer portal overview — "Beginning in April 2020,
+    Acoustic will transfer URLs for all Acoustic products to Acoustic-branded domains",
+    off customer-engagement.ibm.com and ibmmarketingcloud.com and onto goacoustic.com.
+    This is the migration that produced the api-campaign-<region>-<pod>.goacoustic.com
+    hosts in use today.
+  evidence: https://developer.goacoustic.com/acoustic-campaign/reference/overview
+- year: 2026
+  event: >-
+    silverpop.com and www.silverpop.com 301 to https://www.acoustic.com (verified
+    2026-08-13). The Silverpop brand no longer resolves to a product page; the live API is
+    Acoustic Campaign, advertised as one of six anchors in the RFC 9727 api-catalog at
+    developer.goacoustic.com.
+regional_topology:
+  note: >-
+    Not versioning, but the closest thing this API has to an addressing contract: every
+    organization is pinned to a numbered pod in a named region, and the pod is part of the
+    hostname — api-campaign-us-1, api-campaign-us-5, api-campaign-eu-1 and so on. The
+    provider's Postman instructions say it plainly: "Remember to use your specific pod
+    number and data center before submitting a request." A caller that hardcodes us-1 will
+    silently address the wrong tenant estate.
+  evidence: https://developer.goacoustic.com/acoustic-campaign/reference/postman-collection

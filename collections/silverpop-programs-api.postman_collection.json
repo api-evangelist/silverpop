@@ -1,0 +1,268 @@
+{
+  "item": [
+    {
+      "id": "96eda707-d050-419a-a108-b2805785a43d",
+      "name": "Programs",
+      "description": {
+        "content": "Marketing automation program management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8b5334bf-9fdb-47af-add9-65f03a73fff3",
+          "name": "List Programs",
+          "request": {
+            "name": "List Programs",
+            "description": {
+              "content": "Retrieve all marketing automation programs in the account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "programs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ade1b3c6-6c23-4fb1-a167-01201fc9e77d",
+              "name": "List of programs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "programs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"programs\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"paused\",\n      \"type\": \"drip\",\n      \"created\": \"1962-03-06T20:40:13.079Z\",\n      \"modified\": \"1983-01-27T20:53:24.335Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"status\": \"paused\",\n      \"type\": \"batch\",\n      \"created\": \"1951-06-18T02:57:12.006Z\",\n      \"modified\": \"1961-11-27T15:37:30.403Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "890f7ab2-3ac1-4ad8-ad57-33f9b7c9ccd1",
+          "name": "Get Program",
+          "request": {
+            "name": "Get Program",
+            "description": {
+              "content": "Retrieve details and status of a specific marketing automation program.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "programs",
+                ":program_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "program_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "051f0311-a6a1-4d9d-aa7a-9280444f424f",
+              "name": "Program details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "programs",
+                    ":program_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "program_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"active\",\n  \"type\": \"drip\",\n  \"created\": \"1963-07-26T20:32:41.865Z\",\n  \"modified\": \"1989-04-11T15:16:36.072Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5c4dc4f-848d-4513-b2c9-d932370fe4d8",
+              "name": "Program not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "programs",
+                    ":program_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "program_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api-campaign-us-1.goacoustic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "58124048-45a9-4720-b387-6b8fc92635df",
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Programs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.\n\nContact Support:\n Name: Acoustic Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,128 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://github.com/Silverpop (the first-party GitHub organization already wired
+  into apis.yml) reconciled against registry.npmjs.org, trunk.cocoapods.org and
+  search.maven.org
+ownership_note: >-
+  Silverpop is the legacy brand of the platform now sold as Acoustic. silverpop.com
+  and www.silverpop.com both 301 to https://www.acoustic.com, the developer portal
+  moved to developer.goacoustic.com, and the npm package published from the
+  Silverpop GitHub organization is maintained by an npm account named
+  "eric.hutson-acoustic" — so packages served from acoustic.com / acoustic.co
+  identities are this provider's own, not a third party's.
+note: >-
+  Every first-party client library for this API is a source-of-record artifact of the
+  Silverpop / IBM Watson Campaign Automation era, and the currency signal is split.
+  The Node library that wraps the Campaign XML API — published to npm under the name
+  watson-campaign-automation-api, not "silverpop" or "node-engage" — last shipped
+  0.1.9 on 2019-11-19, before the brand had even finished migrating to the
+  goacoustic.com domains in April 2020. The Java client (com.silverpop:spapi-client
+  1.2.6) was never published to Maven Central at all and its last commit is
+  2021-07-14. The only library still moving is the mobile SDK, which was rebuilt
+  under the Acoustic name: AcousticMobilePush 3.10.6 shipped to CocoaPods on
+  2026-02-17. So an integrator wiring up the Campaign REST/XML API in 2026 is being
+  handed an SDK that has not been released in nearly seven years, while the API it
+  wraps is still live and its reference pages were republished 2026-04-08.
+package_count: 5
+official_count: 5
+packages:
+- language: javascript
+  registry: npm
+  name: watson-campaign-automation-api
+  url: https://www.npmjs.com/package/watson-campaign-automation-api
+  install: npm install watson-campaign-automation-api
+  official: true
+  version: 0.1.9
+  published: '2019-11-19'
+  source_code: https://github.com/Silverpop/node-engage
+  covers: Acoustic Campaign (Silverpop Engage) XML API + OAuth 2.0 token exchange
+  note: >-
+    The repository is github.com/Silverpop/node-engage but the published npm name is
+    watson-campaign-automation-api, reflecting the IBM Watson Campaign Automation
+    era. npm maintainers are eric.hutson, eric.hutson-acoustic and wongman — first
+    party. Last release 2019-11-19; the repo has had commits since (most recently
+    2026-05-28) that were never published to the registry, so the registry artifact
+    and the source have diverged.
+- language: javascript
+  registry: null
+  name: node-engage-examples
+  url: https://github.com/Silverpop/node-engage-examples
+  official: true
+  version: null
+  published: null
+  source_code: https://github.com/Silverpop/node-engage-examples
+  note: >-
+    Worked examples for the Node library. Source-only — never published to any
+    registry, so there is no metadata endpoint to read a version from. Last pushed
+    2015-07-15.
+- language: java
+  registry: null
+  name: com.silverpop:spapi-client
+  url: https://github.com/Silverpop/engage-api-client
+  install: null
+  official: true
+  version: 1.2.6
+  published: null
+  source_code: https://github.com/Silverpop/engage-api-client
+  note: >-
+    Version 1.2.6 read from the pom.xml in the repository, not from a registry:
+    search.maven.org returns zero results for both the com.silverpop groupId and the
+    spapi-client artifactId, so this library must be built from source. `published:`
+    is null because Maven Central never received it. Last commit 2021-07-14.
+- language: swift-objc
+  registry: cocoapods
+  name: AcousticMobilePush
+  url: https://cocoapods.org/pods/AcousticMobilePush
+  install: pod 'AcousticMobilePush'
+  official: true
+  version: 3.10.6
+  published: '2026-02-17'
+  source_code: https://github.com/Silverpop/mobile-connector-sdk-ios
+  covers: Mobile app push / in-app messaging channel
+  note: >-
+    The living successor to Silverpop/mobile-connector-sdk-ios (last pushed
+    2015-02-24). CocoaPods trunk owners are experienceanalytics.sdk@acoustic.co,
+    omar.hernandez@acoustic.co and changjie.yang@acoustic.co — first party under the
+    Acoustic name. Six published versions; 3.10.6 on 2026-02-17 is the newest
+    first-party release anywhere in this provider's package estate.
+- language: java
+  registry: null
+  name: mobile-connector-sdk-android
+  url: https://github.com/Silverpop/mobile-connector-sdk-android
+  official: true
+  version: null
+  published: null
+  source_code: https://github.com/Silverpop/mobile-connector-sdk-android
+  note: >-
+    Android counterpart of the mobile connector. Source-only: search.maven.org
+    returns zero results for acousticmobilepush, co.acoustic and com.acoustic, so
+    there is no registry metadata endpoint to read a version or date from. Last
+    pushed 2015-02-24. Recorded as null/null rather than omitted — checked, nothing
+    published.
+absent:
+- registry: pypi
+  note: No first-party Python client found.
+- registry: nuget
+  note: No first-party .NET client found.
+- registry: rubygems
+  note: No first-party Ruby client found.
+- registry: packagist
+  note: >-
+    No first-party PHP client found. The docs page "OAuth token creation in PHP"
+    ships an inline snippet rather than a package.
+- registry: maven-central
+  note: >-
+    Searched for silverpop, engage-api-client, acousticmobilepush, co.acoustic and
+    com.acoustic — zero results on all five. The Java client exists only as source.
+third_party_seen:
+- registry: npm
+  name: silverpop
+  url: https://www.npmjs.com/package/silverpop
+  official: false
+  version: 0.0.1
+  published: '2014-08-21'
+  note: >-
+    "Silverpop Engage API Library" by desmondmorris (github.com/desmondmorris/node-silverpop).
+    Community, not first party; recorded here only so a future run does not mistake
+    the package name for an official SDK.

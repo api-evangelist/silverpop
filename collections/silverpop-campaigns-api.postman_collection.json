@@ -1,0 +1,494 @@
+{
+  "item": [
+    {
+      "id": "6ed8a09f-2748-43d7-962e-ccb08b01cb9b",
+      "name": "Campaigns",
+      "description": {
+        "content": "Email campaign management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "338e03b1-1248-46c0-a180-24e00c68e8d6",
+          "name": "List Campaigns",
+          "request": {
+            "name": "List Campaigns",
+            "description": {
+              "content": "Retrieve all email campaigns (mailings) in the account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "mailings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by campaign status"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4f64e06d-02bc-4b9a-8c66-08981c2eb4ef",
+              "name": "List of campaigns",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "mailings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mailings\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"subject\": \"string\",\n      \"status\": \"draft\",\n      \"database_id\": \"string\",\n      \"from_name\": \"string\",\n      \"from_email\": \"1CSkvtaX1@jmVWybHeMvJ.yo\",\n      \"scheduled_date\": \"1957-01-01T21:29:38.930Z\",\n      \"sent_date\": \"1997-10-12T23:52:31.303Z\",\n      \"created\": \"2002-03-23T18:44:04.108Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"subject\": \"string\",\n      \"status\": \"canceled\",\n      \"database_id\": \"string\",\n      \"from_name\": \"string\",\n      \"from_email\": \"PS2g7kit@ySKb.rrr\",\n      \"scheduled_date\": \"1987-02-14T15:39:32.690Z\",\n      \"sent_date\": \"2012-01-11T19:11:35.824Z\",\n      \"created\": \"2007-07-08T10:42:14.808Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "10f16ce4-3529-46af-9442-814fb69f3519",
+          "name": "Create Campaign",
+          "request": {
+            "name": "Create Campaign",
+            "description": {
+              "content": "Create a new email campaign mailing.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "mailings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"subject\": \"<string>\",\n  \"database_id\": \"<string>\",\n  \"from_name\": \"<string>\",\n  \"from_email\": \"<email>\",\n  \"html_body\": \"<string>\",\n  \"text_body\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b83b418-0614-433f-b8e2-9eb14a19ca90",
+              "name": "Campaign created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "mailings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"subject\": \"<string>\",\n  \"database_id\": \"<string>\",\n  \"from_name\": \"<string>\",\n  \"from_email\": \"<email>\",\n  \"html_body\": \"<string>\",\n  \"text_body\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"mailing_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf83e54f-2029-44b8-b2cf-c5b5bcf62be3",
+          "name": "Get Campaign",
+          "request": {
+            "name": "Get Campaign",
+            "description": {
+              "content": "Retrieve details of a specific email campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "mailings",
+                ":mailing_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mailing_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "84de955c-3ba9-453e-bc81-4926c70771c4",
+              "name": "Campaign details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "mailings",
+                    ":mailing_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"subject\": \"string\",\n  \"status\": \"draft\",\n  \"database_id\": \"string\",\n  \"from_name\": \"string\",\n  \"from_email\": \"PdYFI@E.apo\",\n  \"scheduled_date\": \"1963-01-06T17:12:38.030Z\",\n  \"sent_date\": \"2000-05-07T10:33:47.584Z\",\n  \"created\": \"1954-06-13T05:02:21.835Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a679688f-362d-463b-9307-ad643d4d1bcb",
+              "name": "Campaign not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "mailings",
+                    ":mailing_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf947a62-b7c4-47fa-ae9e-023aa4b5f703",
+          "name": "Schedule Campaign",
+          "request": {
+            "name": "Schedule Campaign",
+            "description": {
+              "content": "Schedule a campaign mailing for delivery at a specific date and time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rest",
+                "mailings",
+                ":mailing_id",
+                "schedule"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mailing_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schedule_date\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b95cbe0-10b5-4a99-9859-feaa3ea19583",
+              "name": "Campaign scheduled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rest",
+                    "mailings",
+                    ":mailing_id",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "mailing_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"schedule_date\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api-campaign-us-1.goacoustic.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a67c97d0-318a-4c7f-b783-51563b51b745",
+    "name": "Silverpop Engage API (Acoustic Campaign) Authentication Campaigns API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.\n\nContact Support:\n Name: Acoustic Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

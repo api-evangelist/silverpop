@@ -4,86 +4,94 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Silverpop
 providerId: silverpop
 created: '2026-05-04'
-modified: '2026-05-04'
-tags:
-  - Email Marketing
-  - Marketing Automation
-  - Campaign Management
-  - Digital Marketing
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Silverpop API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source: https://developer.goacoustic.com/acoustic-campaign/reference/basics
+docs: https://developer.goacoustic.com/acoustic-campaign/reference/basics
+supersedes: >-
+  A 2026-05-04 bulk-sweep scaffold that asserted per-tier request quotas and a full
+  X-RateLimit-* / RateLimit-Policy header set. None of that was published by the
+  provider. It has been replaced with what the provider's own "API limits" page
+  actually says, which is a concurrency model, not a request-rate model.
+description: >-
+  Acoustic Campaign (the platform Silverpop Engage became) does not throttle by request
+  rate. It throttles by CONCURRENCY, and it publishes no rate-limit response headers at
+  all. The documented ceiling is 10 concurrent authenticated requests per ORGANIZATION —
+  not per key, per user, per list or per endpoint — and the 11th in-flight request is
+  rejected outright rather than queued and retried. Callers on the legacy JSESSIONID
+  session auth are additionally capped at 20 active login sessions per organization, and
+  the docs tell you to call the Logout API to release one, because sessions abandoned
+  without a logout can block new session creation for several minutes. An agent
+  integrating this API therefore cannot read a budget off a response header; it has to
+  cap its own in-flight fan-out at 10 and treat rejection as the signal.
+limit_count: 2
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  note: >-
+    No rate-limit response headers are documented anywhere in the Acoustic Campaign API
+    reference, and none were observed on live unauthenticated responses from
+    api-campaign-us-1.goacoustic.com. Recorded as null because they were checked and are
+    absent, not because they were skipped. (The developer PORTAL at
+    developer.goacoustic.com does return x-ratelimit-limit / x-ratelimit-remaining /
+    x-ratelimit-reset, but that is ReadMe's docs-hosting throttle on the documentation
+    site, not the API's — it is not a signal about api-campaign-*.goacoustic.com and
+    must not be recorded as one.)
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  throttled: null
+  note: >-
+    The docs state the request is "rejected" but do not name a status code for
+    concurrency rejection, and the REST response-code reference does not list 429. Left
+    null rather than guessed.
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Silverpop Engage XML API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Silverpop Engage XML API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Silverpop Engage XML API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Silverpop Engage XML API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Silverpop Engage XML API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: API Evangelist
-    url: https://apievangelist.com
-    email: info@apievangelist.com
+- id: concurrent-authenticated-requests
+  scope: per-organization
+  type: concurrency
+  limit: 10
+  window: in-flight
+  burst: null
+  applies_to: OAuth 2.0 authenticated requests
+  enforcement: >-
+    Requests requiring an 11th concurrent thread are rejected. The platform does not hold
+    the request and retry when a thread frees up — the caller must retry.
+  note: >-
+    Verbatim from the provider: "the maximum API Concurrent Authenticated Requests
+    feature setting is set to 10 for Organizations and there is a per organization
+    limit." Explicitly NOT per user, per list, or per API request type. Concurrent
+    requests are not the same as access tokens — a token may be reused across calls.
+  source: https://developer.goacoustic.com/acoustic-campaign/reference/basics
+- id: active-login-sessions
+  scope: per-organization
+  type: concurrency
+  limit: 20
+  window: active sessions
+  burst: null
+  applies_to: Legacy JSESSIONID session authentication (XML API)
+  enforcement: >-
+    No more than 20 active login sessions per org at any time. Release sessions with the
+    Logout API; sessions not terminated properly can remain active for several minutes
+    and block new session creation.
+  note: >-
+    The provider steers callers off this path entirely — "All users of the Acoustic
+    Campaign XML API are strongly encouraged to use OAuth 2.0 authentication." See
+    lifecycle/silverpop-lifecycle.yml.
+  source: https://developer.goacoustic.com/acoustic-campaign/reference/basics
+token_lifetime:
+  access_token_ttl_hours: 4
+  recommended_refresh_hours: 3
+  note: >-
+    Not a rate limit, but it is the other runtime budget the same page publishes: an
+    OAuth access token has a 4-hour lifetime and the provider recommends obtaining a new
+    one every 3 hours. Tokens are reusable within that window, so token minting is not
+    the thing to conserve — concurrency is.
+  source: https://developer.goacoustic.com/acoustic-campaign/reference/basics
+guidance:
+- >-
+  Do not deploy API credentials into a mobile app distributed to end-user devices. The
+  provider states this directly: you lose control over concurrency, you lose API logs for
+  troubleshooting, and calls will fail often on the concurrency limit. Put a service of
+  your own between the app and this API.

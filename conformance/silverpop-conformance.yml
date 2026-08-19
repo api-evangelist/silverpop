@@ -1,0 +1,190 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  live probes of developer.goacoustic.com and api-campaign-us-1.goacoustic.com plus the
+  Acoustic Campaign API reference, 2026-08-13
+description: >-
+  Which industry and cross-cutting standards this API actually conforms to, each with the
+  evidence that settled it. The pattern is consistent with a contract designed in the
+  early 2000s and kept alive: it adopted OAuth 2.0 when that became unavoidable, it
+  adopted the RFC 9727 api-catalog on the modern docs platform, and it adopted nothing
+  else. There is no OpenAPI, no problem+json, no idempotency, no scopes, no RFC 9116.
+standards:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  profile: refresh_token grant
+  evidence: >-
+    POST /oauth/token with grant_type=refresh_token plus client_id, client_secret and
+    refresh_token returns an access_token with an expires_in of 4 hours, presented as a
+    bearer token. Documented at
+    https://developer.goacoustic.com/acoustic-campaign/reference/getting-started-with-oauth
+  deviations:
+  - >-
+    Only the refresh_token grant is offered — there is no authorization_code flow, no
+    client_credentials, and no user-facing consent screen. The refresh token is minted in
+    the Campaign admin UI and EMAILED to the org admin, which is an out-of-band issuance
+    channel rather than an OAuth one.
+  - No scopes. Authorization is inherited from the Campaign permissions of the bound user.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: >-
+    /.well-known/openid-configuration returns 404 on developer.goacoustic.com and on
+    api-campaign-us-1.goacoustic.com. No id_token is issued.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 404 on every probed host.
+- id: rfc9727
+  name: RFC 9727 — API Catalog (/.well-known/api-catalog)
+  conforms: true
+  evidence: >-
+    https://developer.goacoustic.com/.well-known/api-catalog returns HTTP 200 with
+    Content-Type application/linkset+json and a six-anchor linkset that includes
+    acoustic-campaign, the descendant of this API. Saved verbatim at
+    well-known/silverpop-api-catalog.json.
+  deviations:
+  - >-
+    Each anchor advertises a per-product service-desc at
+    /<product>/.well-known/api-catalog; the acoustic-campaign sub-catalog returns 404, so
+    the linkset resolves one level and never reaches a machine-readable service
+    description. The catalog points at HTML reference pages, not at contracts.
+- id: openapi
+  name: OpenAPI 3.x
+  conforms: false
+  evidence: >-
+    /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs, /docs and
+    /redoc were probed on both developer.goacoustic.com (all return the ReadMe SPA HTML
+    shell, HTTP 200, 740,863 bytes — not a spec) and api-campaign-us-1.goacoustic.com (all
+    404). The ReadMe project's own server-rendered state lists four uploaded API
+    definitions (events-2, events-5, events-6, events-7.json) but exposes no public
+    download route for them; api.readme.com/v2 requires an API key. The provider publishes
+    no OpenAPI.
+- id: swagger-1.1
+  name: Swagger 1.1 resource listing
+  conforms: true
+  evidence: >-
+    https://api-campaign-us-1.goacoustic.com/restdoc/messages returns HTTP 200 with a
+    Swagger 1.1 document declaring basePath https://api-campaign-us-1.goacoustic.com/rest
+    and operations for /messages/{messageid}/offers. A resource index enumerates
+    /messages, /events, /eventtypes, /databases, /relationaltables, /webtracking,
+    /channels, /contactsources, /programs, /orgs and /gdpr_jobs. This is a genuine
+    machine-readable service description — it is just twelve years behind the tooling.
+  note: >-
+    The authoritative harvest of these Swagger 1.1 documents lives in the sibling profile
+    all/acoustic/openapi/ (acoustic-campaign-*-swagger.json), captured 2026-08-13. They
+    are deliberately NOT duplicated into this repo — Silverpop is the legacy brand of the
+    same platform, and holding two copies of one contract would credit one API to two
+    providers.
+- id: rfc9457
+  name: RFC 9457 — Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Neither surface emits application/problem+json. The XML API returns a fault envelope
+    with a numeric errorid; the REST API returns bare HTTP statuses with a general-errors /
+    field-errors split. See errors/silverpop-problem-types.yml.
+- id: rfc9116
+  name: RFC 9116 — security.txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt returns the ReadMe SPA HTML shell (HTTP 200, not a document)
+    on developer.goacoustic.com and 404 on api-campaign-us-1.goacoustic.com,
+    www.acoustic.com and www.acoustic.com/security.txt.
+- id: rfc8594
+  name: RFC 8594 — Sunset HTTP header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header and no written deprecation policy. The one live
+    deprecation — JSESSIONID session auth — is announced in prose with no retirement date.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence: >-
+    No idempotency header is documented on either surface. Duplicate creates surface as
+    XML error 122 ("the recipient already exists") rather than as an idempotent replay.
+- id: pagination
+  name: Cross-cutting pagination contract
+  conforms: false
+  evidence: >-
+    No published cursor or offset convention. Bulk reads use an asynchronous export/job
+    model (RawRecipientDataExport, WebTrackingDataExport, ExportList, ExportTable) polled
+    via GetJobStatus.
+- id: json-api
+  name: 'JSON:API'
+  conforms: false
+  evidence: Plain JSON resources; no JSON:API document structure, links or included graph.
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and the legacy /.well-known/agent.json return the ReadMe
+    SPA HTML shell on developer.goacoustic.com and 404 on api-campaign-us-1.goacoustic.com
+    and www.acoustic.com. No agent card is served; no a2a/ artifact was written.
+- id: mcp
+  name: Model Context Protocol
+  conforms: false
+  evidence: >-
+    No hosted MCP endpoint found; /acoustic-campaign/mcp returns 404. No first-party MCP
+    package on npm or PyPI. See mcp/silverpop-mcp.yml.
+- id: llms-txt
+  name: llms.txt
+  conforms: false
+  evidence: >-
+    /llms.txt returns 404 on developer.goacoustic.com and /acoustic-campaign/llms.txt
+    returns 404. (www.acoustic.com does serve one, but it is corporate marketing content
+    about the Acoustic brand and contains no API surface — it belongs to the Acoustic
+    profile, not to this API.)
+compliance:
+  published: true
+  source: https://www.acoustic.com/llms.txt
+  ownership_note: >-
+    Read from acoustic.com because silverpop.com 301s there — Acoustic is the current
+    owner and vendor of the Silverpop platform, so these are this provider's own claims
+    about this product.
+  note: >-
+    Named in the provider's own machine-readable company profile. These are vendor CLAIMS,
+    not audited attestations sighted by API Evangelist: there is no trust center, no
+    public report portal and no security.txt on any Acoustic host, so a buyer cannot
+    retrieve the reports without going through sales.
+  certifications:
+  - id: soc2
+    name: SOC 2
+    claimed: true
+    report_accessible: false
+  - id: iso27001
+    name: ISO 27001
+    claimed: true
+    report_accessible: false
+  - id: iso27017
+    name: ISO 27017
+    claimed: true
+    report_accessible: false
+  - id: iso27018
+    name: ISO 27018
+    claimed: true
+    report_accessible: false
+  regulations:
+  - id: gdpr
+    name: GDPR
+    claimed: true
+    api_support: >-
+      Backed by a real API surface, not just a policy page: /rest/gdpr_jobs is one of the
+      eleven resources in the live Swagger 1.1 resource listing, and PurgeData is a
+      documented XML operation.
+  - id: ccpa
+    name: CCPA
+    claimed: true
+  - id: can-spam
+    name: CAN-SPAM
+    claimed: true
+  email_authentication:
+  - SPF
+  - DKIM
+  - DMARC
+summary:
+  conformant: 3
+  non_conformant: 11
+  headline: >-
+    OAuth 2.0, an RFC 9727 api-catalog and a Swagger 1.1 service description are real. No
+    OpenAPI, no problem+json, no idempotency, no scopes, no security.txt, no agent surface.

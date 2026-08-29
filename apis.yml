@@ -198,6 +198,9 @@ apis:
     url: >-
       https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/rules/silverpop-rules.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/silverpop-capability-edges.yml
+    name: Silverpop Business Capability Map
   - type: AgenticAccess
     url: agentic-access/silverpop-agentic-access.yml
   - type: DomainSecurity

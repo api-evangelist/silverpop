@@ -22,6 +22,18 @@ x-successor:
     the Engage/Campaign API contract that carries the Silverpop operation names. The
     live Acoustic Campaign Swagger 1.1 service descriptions are held once, in the
     Acoustic profile, and are deliberately not duplicated here.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: sales

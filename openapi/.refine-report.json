@@ -1,12 +1,7 @@
 {
   "provider": "silverpop",
   "sources": [
-    "silverpop-authentication-api-openapi.yml",
-    "silverpop-campaigns-api-openapi.yml",
-    "silverpop-contacts-api-openapi.yml",
-    "silverpop-programs-api-openapi.yml",
-    "silverpop-reports-api-openapi.yml",
-    "silverpop-transactional-api-openapi.yml"
+    "_original/silverpop-openapi.yml"
   ],
   "outputs": [
     "silverpop-authentication-api-openapi.yml",
@@ -19,6 +14,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "silverpop-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "silverpop-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "silverpop-campaigns-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "silverpop-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "silverpop-programs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "silverpop-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "silverpop-transactional-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

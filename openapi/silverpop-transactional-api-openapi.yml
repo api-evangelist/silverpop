@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Silverpop Engage API (Acoustic Campaign) Authentication Transactional API
+  title: Silverpop Engage API (Acoustic Campaign) Transactional API
   description: The Silverpop Engage API, now provided as Acoustic Campaign (formerly IBM Watson Campaign Automation), enables digital marketers to manage contact lists, execute email campaigns, send transactional messages, and track engagement through a REST and XML-based interface.
   version: '1.0'
   contact:

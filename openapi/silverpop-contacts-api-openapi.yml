@@ -186,21 +186,6 @@ paths:
           description: Contact removed
 components:
   schemas:
-    ContactInput:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          format: email
-        first_name:
-          type: string
-        last_name:
-          type: string
-        custom_fields:
-          type: object
-          additionalProperties: true
     Contact:
       type: object
       properties:
@@ -253,6 +238,21 @@ components:
         modified:
           type: string
           format: date-time
+    ContactInput:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        custom_fields:
+          type: object
+          additionalProperties: true
   securitySchemes:
     BearerAuth:
       type: http

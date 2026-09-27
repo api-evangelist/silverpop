@@ -314,3 +314,5 @@ x-enrichment:
     provider-published, and their operationIds are invented — grounding skills in them
     would teach an agent to call paths like /rest/mailings that the live Swagger shows as
     /rest/messages).
+x-parent: acoustic
+x-relationship: product

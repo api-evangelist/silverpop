@@ -123,32 +123,6 @@ paths:
           description: Campaign scheduled
 components:
   schemas:
-    CampaignInput:
-      type: object
-      required:
-      - name
-      - subject
-      - database_id
-      - from_name
-      - from_email
-      properties:
-        name:
-          type: string
-        subject:
-          type: string
-        database_id:
-          type: string
-        from_name:
-          type: string
-        from_email:
-          type: string
-          format: email
-        html_body:
-          type: string
-          description: HTML email body
-        text_body:
-          type: string
-          description: Plain text email body
     Campaign:
       type: object
       properties:
@@ -185,6 +159,32 @@ components:
         created:
           type: string
           format: date-time
+    CampaignInput:
+      type: object
+      required:
+      - name
+      - subject
+      - database_id
+      - from_name
+      - from_email
+      properties:
+        name:
+          type: string
+        subject:
+          type: string
+        database_id:
+          type: string
+        from_name:
+          type: string
+        from_email:
+          type: string
+          format: email
+        html_body:
+          type: string
+          description: HTML email body
+        text_body:
+          type: string
+          description: Plain text email body
   securitySchemes:
     BearerAuth:
       type: http

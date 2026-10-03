@@ -112,6 +112,24 @@ paths:
                       $ref: '#/components/schemas/EngagementEvent'
 components:
   schemas:
+    EngagementEvent:
+      type: object
+      properties:
+        contact_id:
+          type: string
+        email:
+          type: string
+          format: email
+        timestamp:
+          type: string
+          format: date-time
+        url:
+          type: string
+          description: Clicked URL (for click events)
+        user_agent:
+          type: string
+        ip_address:
+          type: string
     CampaignReport:
       type: object
       properties:
@@ -141,24 +159,6 @@ components:
         click_rate:
           type: number
           format: float
-    EngagementEvent:
-      type: object
-      properties:
-        contact_id:
-          type: string
-        email:
-          type: string
-          format: email
-        timestamp:
-          type: string
-          format: date-time
-        url:
-          type: string
-          description: Clicked URL (for click events)
-        user_agent:
-          type: string
-        ip_address:
-          type: string
   securitySchemes:
     BearerAuth:
       type: http

@@ -186,6 +186,29 @@ paths:
           description: Contact removed
 components:
   schemas:
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Database identifier
+        name:
+          type: string
+          description: Database name
+        type:
+          type: string
+          enum:
+          - database
+          - query
+          - relational_table
+        contact_count:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
     Contact:
       type: object
       properties:
@@ -230,29 +253,6 @@ components:
         custom_fields:
           type: object
           additionalProperties: true
-    Database:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Database identifier
-        name:
-          type: string
-          description: Database name
-        type:
-          type: string
-          enum:
-          - database
-          - query
-          - relational_table
-        contact_count:
-          type: integer
-        created:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
   securitySchemes:
     BearerAuth:
       type: http

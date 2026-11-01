@@ -1,4 +1,4 @@
-# Silverpop (silverpop)
+# Silverpop
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,61 +64,143 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Silverpop (now Acoustic, formerly IBM Watson Campaign Automation) is a digital marketing automation platform offering email marketing, marketing automation, mobile messaging, and campaign management. The platform provides XML and REST APIs for list management, contact data, campaign execution, transactional messaging, and reporting.
+Silverpop Engage is the email marketing, marketing automation and transactional messaging API now sold as Acoustic Campaign, and one of the longest-lived commercial marketing APIs still in production. The operation names an integrator calls today — AddRecipient, ScheduleMailing, RawRecipientDataExport — are the original Silverpop names, unchanged through acquisition by IBM in 2014 (as Watson Campaign Automation) and the carve-out to Acoustic in 2019; silverpop.com now 301s to acoustic.com and the developer portal lives at developer.goacoustic.com. Two surfaces sit behind one per-tenant host: a single-endpoint XML API at /XMLAPI carrying roughly sixty operations across contact databases, contact lists, relational tables, scoring models, templates and mailings, dynamic content and reporting, and a narrower JSON REST API at /rest with eleven resources including gdpr_jobs. Authentication is OAuth 2.0 with the refresh_token grant only and no scope model; the binding runtime limit is a cap of ten concurrent requests per organization rather than a request rate.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/apis.yml)
+**Areas:** Email Marketing · Marketing Automation · Campaign Management · Digital Marketing · Transactional Email · SMS · Customer Data · Contact Management · Mobile Push · Marketing Analytics
 
-## Tags
+## Silverpop on APIs.io
 
-- Email Marketing
-- Marketing Automation
-- Campaign Management
-- Digital Marketing
+Everything profiled for Silverpop is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/silverpop/](https://apis.io/providers/silverpop/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (6)
 
-- **Created:** 2026-05-02
-- **Modified:** 2026-05-02
+- [Silverpop Authentication API](https://apis.io/apis/silverpop/silverpop-authentication-api/) — OAuth 2.0 token management
+- [Silverpop Campaigns API](https://apis.io/apis/silverpop/silverpop-campaigns-api/) — Email campaign management
+- [Silverpop Contacts API](https://apis.io/apis/silverpop/silverpop-contacts-api/) — Contact (recipient) list management
+- [Silverpop Programs API](https://apis.io/apis/silverpop/silverpop-programs-api/) — Marketing automation program management
+- [Silverpop Reports API](https://apis.io/apis/silverpop/silverpop-reports-api/) — Campaign reporting and analytics
+- [Silverpop Transactional API](https://apis.io/apis/silverpop/silverpop-transactional-api/) — Transactional email and SMS messaging
 
-## APIs
+### Published properties
 
-### Silverpop Engage XML API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-The Silverpop Engage XML API (now Acoustic Campaign) provides XML-based endpoints for managing contact lists, sending email campaigns, tracking engagement, and administering marketing automation workflows. Supports OAuth 2.0 authentication with client credentials.
+#### MCP servers (1)
 
-- **Human URL:** [https://developer.goacoustic.com/acoustic-campaign/reference/overview](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
-- **Base URL:** `https://api-campaign-us-1.goacoustic.com`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [silverpop-mcp.yml](https://apis.io/servers/silverpop/silverpop-mcp-yml/)
 
-- Email Marketing
-- Campaign Management
-- Contact Management
-- Marketing Automation
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Silverpop Agentic Access](https://apis.io/agentic-access/silverpop/silverpop-agentic-access/)
+
+#### JSON Schema (1)
+
+The data models the API reads and writes.
+
+- [Silverpop Contact](https://apis.io/schemas/silverpop/silverpop-contact/)
+
+#### JSON Structure (1)
+
+Data models expressed in JSON Structure.
+
+- [Silverpop Contact Structure](https://apis.io/json-structure/silverpop/silverpop-contact-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Silverpop Context](https://apis.io/jsonld/silverpop/silverpop-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Silverpop Vocabulary](https://apis.io/vocabularies/silverpop/silverpop-vocabulary/)
+
+#### Examples (1)
+
+Example requests and responses.
+
+- [Silverpop Add Contact Example](https://apis.io/examples/silverpop/silverpop-add-contact-example/)
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [Silverpop Engage API (Acoustic Campaign)](https://apis.io/collections/silverpop/open-silverpop/)
+- [Silverpop Engage API (Acoustic Campaign) Authentication API](https://apis.io/collections/silverpop/open-silverpop-authentication-api/)
+- [Silverpop Engage API (Acoustic Campaign) Authentication Campaigns API](https://apis.io/collections/silverpop/open-silverpop-campaigns-api/)
+- [Silverpop Engage API (Acoustic Campaign) Authentication Contacts API](https://apis.io/collections/silverpop/open-silverpop-contacts-api/)
+- [Silverpop Engage API (Acoustic Campaign) Authentication Programs API](https://apis.io/collections/silverpop/open-silverpop-programs-api/)
+- [Silverpop Engage API (Acoustic Campaign) Authentication Reports API](https://apis.io/collections/silverpop/open-silverpop-reports-api/)
+- [Silverpop Engage API (Acoustic Campaign) Authentication Transactional API](https://apis.io/collections/silverpop/open-silverpop-transactional-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Silverpop — jsonschema rules](https://apis.io/rules/silverpop/silverpop-jsonschema-spectral-rules/)
+- [Silverpop API Rules](https://apis.io/rules/silverpop/silverpop-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Silverpop Authentication](https://apis.io/security/silverpop/silverpop-authentication/)
+- [Silverpop Domain Security](https://apis.io/security/silverpop/silverpop-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Silverpop Plans Pricing](https://apis.io/plans/silverpop/silverpop-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Silverpop Rate Limits](https://apis.io/rate-limits/silverpop/silverpop-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Silverpop Finops](https://apis.io/finops/silverpop/silverpop-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Documentation](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/openapi/silverpop-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [GitHub Organization](https://github.com/Silverpop)
-- [Node J S S D K](https://github.com/Silverpop/node-engage)
-- [Authentication](https://developer.goacoustic.com/acoustic-campaign/docs/authentication)
-- [Spectral Rules](https://raw.githubusercontent.com/api-evangelist/silverpop/refs/heads/main/rules/silverpop-rules.yml)
-- [Postman Collection](collections/silverpop.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/silverpop.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Getting started](https://developer.goacoustic.com/acoustic-campaign/reference/getting-started-with-oauth)
+- [API reference](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
+- [Pricing](https://www.acoustic.com/pricing)
+- [Sign up](https://www.acoustic.com/demo)
+- [Support](https://help.goacoustic.com)
+- [Blog](https://www.acoustic.com/resources/blog)
+- [Terms of service](https://www.acoustic.com/terms-conditions)
+- [Privacy policy](https://www.acoustic.com/privacy-notice)
+- [GitHub](https://github.com/Silverpop)
+- [Status](https://status.goacoustic.com)
 
-## Common Properties
+## API Evangelist rating
 
-- [LinkedIn](https://www.linkedin.com/company/silverpop-systems-inc)
-- [GitHub Organization](https://github.com/Silverpop)
-- [Developer Portal](https://developer.goacoustic.com)
-- [Documentation](https://developer.goacoustic.com/acoustic-campaign/reference/overview)
-- [Authentication](https://developer.goacoustic.com/acoustic-campaign/docs/authentication)
-- [Terms of Service](https://www.goacoustic.com/terms-of-use)
-- [Privacy Policy](https://www.goacoustic.com/privacy-notice)
+**Unrated** — no public website could be reached for this company, so there was almost nothing to measure and nothing a reader could check.
 
-## Maintainers
+This is not a score of zero. No rating is published for this company. If that is wrong because something public exists that we missed, say so on this repository or email [info@apievangelist.com](mailto:info@apievangelist.com) and it will be re-run — free, and no justification needed.
 
-**FN:** API Evangelist
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Silverpop: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/silverpop/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).

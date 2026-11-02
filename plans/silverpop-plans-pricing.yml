@@ -1,0 +1,62 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://www.acoustic.com/pricing
+sources:
+- https://www.acoustic.com/pricing
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T141238
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: negotiated
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+published: false
+note: No numeric price is published on the pricing page; Tiered plans listed with feature comparison but
+  no numeric prices; all CTAs are 'Get a demo'.
+plan_count: 3
+plans:
+- name: Professional
+  price_text: Get a demo
+  period: none
+  included_quota: Best for smaller teams building their lifecycle marketing foundation.
+- name: Premium
+  price_text: Get a demo
+  period: none
+  included_quota: Designed for teams scaling personalization with deeper behavioral intelligence.
+- name: Ultimate
+  price_text: Get a demo
+  period: none
+  included_quota: Perfect for brands running complex, high-volume customer journeys at scale.
+rate_limit_statements:
+- 1M screen views/month
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Professional
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Premium
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Ultimate
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
